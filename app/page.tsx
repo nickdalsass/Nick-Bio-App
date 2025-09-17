@@ -1,10 +1,11 @@
-import HomePage from './components/HomePage';
-import { MantineProvider } from '@mantine/core';
+import HomeBackground from "./components/HomeBackground";
+import HomeOverlay from "./components/HomeOverlay";
 
 export default function Home() {
   return (
-    <MantineProvider>
-      <HomePage />
-    </MantineProvider>
+    <>
+      <HomeBackground />
+      <HomeOverlay />
+    </>
   );
 }

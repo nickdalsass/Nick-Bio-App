@@ -1,53 +1,39 @@
-import './globals.css';
-import '@mantine/core/styles.css';
+import "./globals.css";
+import "@mantine/core/styles.css";
 import {
   AppShell,
   AppShellHeader,
   AppShellMain,
   MantineProvider,
   Title,
-  SegmentedControl,
-} from '@mantine/core';
+  Group,
+} from "@mantine/core";
+import PageController from "./components/PageController";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+ 
+
   return (
-    <html lang='en'>
+    <html lang="en">
       <body>
-        <MantineProvider defaultColorScheme='dark'>
-          <AppShell
-            ff={'JetBrains Mono, monospace'}
-            header={{ height: 120 }}
-          >
-            <AppShellHeader
-              bg={'#d3d3d3'}
-              withBorder={false}
-              className='header-blur-edge'
-              style={{ padding: 0, margin: 0 }}
-            >
-              <Title
-                ff={'inherit'}
-                c={'transparent'}
-                size={42}
-                style={{ padding: 20, WebkitTextStroke: '2px black' }}
-              >
-                Nicholas Dalsass
-              </Title>
-              <SegmentedControl
-                size={'lg'}
-                radius={'lg'}
-                mr={20}
-                withItemsBorders={false}
-                bg={'#d3d3d3'}
-                styles={{
-                  label: { color: '#222' },
-                  indicator: { backgroundColor: 'rgba(0, 0, 0, 0.12)' },
-                }}
-                data={['Home', 'Projects', 'Articles', 'Connect']}
-              />
+        <MantineProvider defaultColorScheme="dark">
+          <AppShell ff={"JetBrains Mono, monospace"} header={{ height: 100 }}>
+            <AppShellHeader withBorder={false} bg={"#d3d3d3"}>
+              <Group justify="space-between" align="center" style={{ height: '100%' }}>
+                <Title
+                  ff={"inherit"}
+                  c={"#222"}
+                  size={42}
+                  style={{ padding: 20 }}
+                >
+                  Nicholas Dalsass
+                </Title>
+                <PageController />
+              </Group>
             </AppShellHeader>
             <AppShellMain>{children}</AppShellMain>
           </AppShell>
