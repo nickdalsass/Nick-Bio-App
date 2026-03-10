@@ -8,7 +8,7 @@ import {
   useCallback,
 } from "react";
 
-export type LayoutMode = "grid" | "list" | "compact";
+export type LayoutMode = "grid" | "list";
 
 const LAYOUT_STORAGE_KEY = "bio-app-layout";
 
@@ -30,7 +30,7 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!mounted) return;
     const stored = localStorage.getItem(LAYOUT_STORAGE_KEY) as LayoutMode | null;
-    if (stored && ["grid", "list", "compact"].includes(stored)) {
+    if (stored && ["grid", "list"].includes(stored)) {
       setLayoutModeState(stored);
     }
   }, [mounted]);

@@ -25,7 +25,6 @@ export default function LayoutSwitcher({ onChange }: LayoutSwitcherProps) {
       data={[
         { label: "Grid", value: "grid" },
         { label: "List", value: "list" },
-        { label: "Compact", value: "compact" },
       ]}
       styles={{
         label: { color: "#000" },

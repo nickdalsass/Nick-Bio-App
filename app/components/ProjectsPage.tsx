@@ -40,12 +40,7 @@ export default function ProjectsPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const cardVariant =
-    layoutMode === "list"
-      ? "list"
-      : layoutMode === "compact"
-        ? "compact"
-        : "card";
+  const cardVariant = layoutMode === "list" ? "list" : "card";
 
   if (loading) {
     return (
@@ -84,7 +79,7 @@ export default function ProjectsPage() {
           </Stack>
         ) : (
           <SimpleGrid
-            cols={{ base: 1, sm: 2, lg: layoutMode === "compact" ? 3 : 2 }}
+            cols={{ base: 1, sm: 2 }}
             spacing={{ base: "md", md: "lg" }}
           >
             {repos.map((repo) => (

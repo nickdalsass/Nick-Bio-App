@@ -21,7 +21,7 @@ const LANG_COLORS: Record<string, string> = {
 
 interface ProjectCardProps {
   repo: GitHubRepo;
-  variant?: "card" | "compact" | "list";
+  variant?: "card" | "list";
 }
 
 export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps) {
@@ -38,7 +38,7 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
       style={{ textDecoration: "none", color: "inherit" }}
     >
     <Paper
-      p={variant === "compact" ? "md" : "lg"}
+      p="lg"
       radius={0}
       style={{
         border: "2px solid",
@@ -46,27 +46,26 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
         boxShadow: "inset 1px 1px 0 #fff",
         background: "#c0c0c0",
         transition: "all 0.2s ease",
-        height: variant === "compact" ? 100 : 170,
+        height: 170,
         overflow: "hidden",
       }}
       className="project-card"
     >
       <Stack gap="xs" style={{ height: "100%", minHeight: 0 }}>
         <Group justify="space-between" wrap="nowrap">
-          <Text fw={700} size={variant === "compact" ? "md" : "lg"} lineClamp={1}>
+          <Text fw={700} size="lg" lineClamp={1}>
             {repo.name.replace(/-/g, " ")}
           </Text>
           <Badge size="xs" variant="dot" color={langColor}>
             {repo.language ?? "Other"}
           </Badge>
         </Group>
-        {repo.description && variant !== "compact" && (
+        {repo.description && (
           <Text size="sm" c="dimmed" lineClamp={variant === "list" ? 2 : 2}>
             {repo.description}
           </Text>
         )}
-        {variant !== "compact" && (
-          <Group gap="sm" mt="xs">
+        <Group gap="sm" mt="xs">
             <Text size="xs" c="dimmed">
               ★ {repo.stargazers_count}
             </Text>
@@ -74,7 +73,6 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
               ⎇ {repo.forks_count}
             </Text>
           </Group>
-        )}
       </Stack>
     </Paper>
     </Anchor>
