@@ -29,7 +29,11 @@ const PageController = () => {
       radius="lg"
       mr={20}
       withItemsBorders={false}
-      bg="#d3d3d3"
+      style={{
+        background: "#c0c0c0",
+        border: "1px solid #808080",
+        boxShadow: "inset 2px 2px 2px #fff, inset -1px -1px 1px #404040",
+      }}
       value={currentPage}
       onChange={(selectedPage) => {
         if (selectedPage === "Connect") router.push("/connect");
@@ -38,8 +42,12 @@ const PageController = () => {
         else if (selectedPage === "Home") router.push("/");
       }}
       styles={{
-        label: { color: "#222", position: "relative", zIndex: 1 },
-        indicator: { backgroundColor: "rgba(0, 0, 0, 0.12)" },
+        label: { color: "#000", position: "relative", zIndex: 1 },
+        indicator: {
+          background: "#c0c0c0",
+          border: "1px solid #808080",
+          boxShadow: "inset 1px 1px 0 #404040",
+        },
       }}
       data={["Home", "Projects", "Articles", "Connect"]}
     />
