@@ -1,5 +1,6 @@
 import "./globals.css";
 import "@mantine/core/styles.css";
+import Link from "next/link";
 import {
   AppShell,
   AppShellHeader,
@@ -10,6 +11,7 @@ import {
 } from "@mantine/core";
 import PageController from "./components/PageController";
 import { LayoutProvider } from "./components/LayoutContext";
+import ResumeViewer from "./components/ResumeViewer";
 
 export default function RootLayout({
   children,
@@ -20,7 +22,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className="retro-scanlines">
 <MantineProvider defaultColorScheme="light" theme={{ fontFamily: "Share Tech Mono, MS Sans Serif, Tahoma, sans-serif" }}>
             <LayoutProvider>
             <AppShell ff={"inherit"} header={{ height: { base: 70, md: 100 } }}>
@@ -34,14 +36,22 @@ export default function RootLayout({
               }}
             >
               <Group justify="space-between" align="center" wrap="wrap" gap="md" style={{ height: '100%', padding: '0 12px' }}>
+                <Link href="/" className="header-home-link" style={{ textDecoration: "none" }}>
                 <Title
                   ff={"inherit"}
                   c={"#fff"}
                   size={42}
-                  style={{ padding: "12px 20px", fontSize: "clamp(1.25rem, 3vw, 2.625rem)" }}
+                  className="header-title"
+                  style={{
+                    padding: "12px 20px",
+                    fontSize: "clamp(1.25rem, 3vw, 2.625rem)",
+                    cursor: "pointer",
+                    transition: "opacity 0.2s",
+                  }}
                 >
                   Nicholas Dalsass
                 </Title>
+              </Link>
                 <PageController />
               </Group>
             </AppShellHeader>
@@ -49,13 +59,12 @@ export default function RootLayout({
               style={{
                 overflowY: "auto",
                 background: "#c0c0c0",
-                margin: 8,
-                border: "2px solid",
-                borderColor: "#fff #404040 #404040 #fff",
-                boxShadow: "inset 1px 1px 0 #fff",
+                borderTop: "2px solid #fff",
+                boxShadow: "inset 2px 2px 0 #fff, inset -2px -2px 0 #404040",
               }}
             >
               {children}
+              <ResumeViewer />
             </AppShellMain>
           </AppShell>
             </LayoutProvider>

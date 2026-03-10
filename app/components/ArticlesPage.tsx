@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import {
   SimpleGrid,
   Stack,
@@ -13,24 +14,36 @@ import {
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutMode } from "./LayoutContext";
 
-const ARTICLES = [
+type ArticleCategory = "computing" | "philosophy";
+
+const ARTICLES: Array<{
+  id: string;
+  title: string;
+  excerpt: string;
+  url: string;
+  docId?: string;
+  type: "gdoc" | "link";
+  category: ArticleCategory;
+}> = [
   {
     id: "1",
     title: "Homomorphic Encryption",
     excerpt:
-      "An introduction to homomorphic encryption, a rapidly advancing cryptography technique.",
+      "An introductory research paper on homomorphic encryption, a rapidly advancing cryptography technique.",
     url: "https://docs.google.com/document/d/1EDQuT9CxJ-gVdZ8jWAfSlE5PpZ01hDL6J9UmGL4gyKI/preview",
     docId: "1EDQuT9CxJ-gVdZ8jWAfSlE5PpZ01hDL6J9UmGL4gyKI",
-    type: "gdoc" as const,
+    type: "gdoc",
+    category: "computing",
   },
   {
     id: "2",
     title: "Modeling Autonomous Vehicles",
     excerpt:
-      "Research on modeling highway functionality of automated vehicles using finite automata.",
+      "Research paper covering the modeling of highway functionality in automated vehicles using finite automata.",
     url: "https://docs.google.com/document/d/1NBAvv5JiQw-a9w_Z8hWeMqpVeHz5fktnbIzjHee8wsI/preview",
     docId: "1NBAvv5JiQw-a9w_Z8hWeMqpVeHz5fktnbIzjHee8wsI",
-    type: "gdoc" as const,
+    type: "gdoc",
+    category: "computing",
   },
   {
     id: "3",
@@ -39,17 +52,44 @@ const ARTICLES = [
       "Introductory Blender Project working with photogrammetry tools to model a given 3D object.",
     url: "https://docs.google.com/document/d/1u2gcZYiIVxvm8n2kdDvFb4x0yOSrn3EiBpF5MnGGje8/preview",
     docId: "1u2gcZYiIVxvm8n2kdDvFb4x0yOSrn3EiBpF5MnGGje8",
-    type: "gdoc" as const,
+    type: "gdoc",
+    category: "computing",
   },
   {
     id: "4",
     title: "Simple Compiler in Java",
     excerpt:
-      "This is a report recounting a group project on a simple compiler. This report grapples with some fundamental concepts of programming languages.",
+      "This is a report recounting a group project on a simple compiler that grapples with some fundamental concepts of programming languages.",
     url: "https://docs.google.com/document/d/1_9fKh5Kf_ynFQB0S8qzU0ZEt4yCEtyzZ6FQ44NTNMOw/preview",
     docId: "1_9fKh5Kf_ynFQB0S8qzU0ZEt4yCEtyzZ6FQ44NTNMOw",
-    type: "gdoc" as const,
+    type: "gdoc",
+    category: "computing",
   },
+  {
+    id: "5",
+    title: "Reason: A Missing Link",
+    excerpt:
+      "This paper investigates claims about reason, Naturalism and Supernaturalism in C.S. Lewis's Miracles contrasts these claims with those of John McDowell, a contemporary philosopher.",
+    url: "https://docs.google.com/document/d/1B33m6goNq4aqI-ucRJEZMSE8BrZgxydsnZA8dpEk2ng/preview",
+    docId: "1B33m6goNq4aqI-ucRJEZMSE8BrZgxydsnZA8dpEk2ng",
+    type: "gdoc",
+    category: "philosophy",
+  },
+  {
+    id: "6",
+    title: "Whether Eternal Matter Matters?",
+    excerpt:
+      "A brief investigation into St. Thomas Aquinas's views on the eternity of the world.",
+    url: "https://docs.google.com/document/d/1upRxz1fmhbyS39qIoCOp5FewUr29bdza1_geP4gk9d0/preview",
+    docId: "1upRxz1fmhbyS39qIoCOp5FewUr29bdza1_geP4gk9d0",
+    type: "gdoc",
+    category: "philosophy",
+  },
+];
+
+const SECTIONS: { key: ArticleCategory; title: string }[] = [
+  { key: "computing", title: "Computing & Mathematics" },
+  { key: "philosophy", title: "Philosophical Essays" },
 ];
 
 interface ArticleCardProps {
@@ -58,16 +98,25 @@ interface ArticleCardProps {
   url: string;
   type?: "gdoc" | "link";
   layoutMode?: "grid" | "list";
+  index?: number;
 }
 
-function ArticleCard({ title, excerpt, url, type, layoutMode = "grid" }: ArticleCardProps) {
+function ArticleCard({ title, excerpt, url, type, layoutMode = "grid", index = 0 }: ArticleCardProps) {
   const previewUrl = type === "gdoc" ? url : null;
   const iframeHeight = layoutMode === "list" ? "min(70vh, 600px)" : "min(45vh, 400px)";
 
   return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: index * 0.08 }}
+      whileHover={{ y: -3 }}
+      style={{ height: "100%" }}
+    >
     <Paper
       p="lg"
       radius={0}
+      className="retro-card"
       style={{
         border: "2px solid",
         borderColor: "#fff #404040 #404040 #fff",
@@ -118,6 +167,7 @@ function ArticleCard({ title, excerpt, url, type, layoutMode = "grid" }: Article
         )}
       </Stack>
     </Paper>
+    </motion.div>
   );
 }
 
@@ -128,26 +178,78 @@ const ArticlesPage = () => {
     <Container size="xl" py="xl" style={{ minHeight: "70vh" }}>
       <Stack gap="xl">
         <Group justify="space-between" align="center" wrap="wrap" gap="md">
-          <Title order={2}>Articles</Title>
+          <motion.div
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Title order={2}>Articles</Title>
+          </motion.div>
           <LayoutSwitcher />
         </Group>
+        <div
+          style={{
+            margin: "0 0 1rem",
+            borderTop: "2px solid #404040",
+            borderBottom: "1px solid #fff",
+            boxShadow: "0 1px 0 #808080",
+          }}
+        />
 
-        {layoutMode === "list" ? (
-          <Stack gap="xl">
-            {ARTICLES.map((article) => (
-              <ArticleCard key={article.id} {...article} layoutMode="list" />
-            ))}
-          </Stack>
-        ) : (
-          <SimpleGrid
-            cols={{ base: 1, sm: 2 }}
-            spacing={{ base: "lg", md: "xl" }}
-          >
-            {ARTICLES.map((article) => (
-              <ArticleCard key={article.id} {...article} layoutMode="grid" />
-            ))}
-          </SimpleGrid>
-        )}
+        {SECTIONS.map((section, sectionIdx) => {
+          const sectionArticles = ARTICLES.filter((a) => a.category === section.key);
+          if (sectionArticles.length === 0) return null;
+
+          return (
+            <Stack key={section.key} gap="md">
+              {sectionIdx > 0 && (
+                <div
+                  style={{
+                    margin: "1.5rem 0",
+                    borderTop: "2px solid #404040",
+                    borderBottom: "1px solid #fff",
+                    boxShadow: "0 1px 0 #808080",
+                  }}
+                />
+              )}
+              <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: sectionIdx * 0.1 }}
+              >
+                <Title order={3} size="h4" c="dark.7" fw={600}>
+                  {section.title}
+                </Title>
+              </motion.div>
+              {layoutMode === "list" ? (
+                <Stack gap="xl">
+                  {sectionArticles.map((article, i) => (
+                    <ArticleCard
+                      key={article.id}
+                      {...article}
+                      layoutMode="list"
+                      index={sectionIdx * 10 + i}
+                    />
+                  ))}
+                </Stack>
+              ) : (
+                <SimpleGrid
+                  cols={{ base: 1, sm: 2 }}
+                  spacing={{ base: "lg", md: "xl" }}
+                >
+                  {sectionArticles.map((article, i) => (
+                    <ArticleCard
+                      key={article.id}
+                      {...article}
+                      layoutMode="grid"
+                      index={sectionIdx * 10 + i}
+                    />
+                  ))}
+                </SimpleGrid>
+              )}
+            </Stack>
+          );
+        })}
       </Stack>
     </Container>
   );

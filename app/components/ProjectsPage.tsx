@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import {
   Center,
   SimpleGrid,
@@ -45,10 +46,17 @@ export default function ProjectsPage() {
   if (loading) {
     return (
       <Center style={{ minHeight: "70vh", background: "#c0c0c0" }}>
-        <Stack align="center" gap="md">
-          <Loader size="lg" />
-          <Text c="dimmed">Loading projects from GitHub...</Text>
-        </Stack>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <Stack align="center" gap="md">
+            <Loader size="lg" color="gray" />
+            <Text c="dimmed" size="sm">Fetching from GitHub...</Text>
+            <Text size="xs" c="dimmed" fs="italic">{`C:/Users/Nick/Projects > Loading Repos...`}</Text>
+          </Stack>
+        </motion.div>
       </Center>
     );
   }
@@ -67,14 +75,35 @@ export default function ProjectsPage() {
     <Container size="xl" py="xl" style={{ minHeight: "70vh", background: "#c0c0c0" }}>
       <Stack gap="xl">
         <Group justify="space-between" align="center" wrap="wrap" gap="md">
-          <Title order={2}>Projects</Title>
+          <motion.div
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Title order={2}>Projects</Title>
+          </motion.div>
           <LayoutSwitcher />
         </Group>
+        <div
+          style={{
+            margin: "0 0 1rem",
+            borderTop: "2px solid #404040",
+            borderBottom: "1px solid #fff",
+            boxShadow: "0 1px 0 #808080",
+          }}
+        />
 
         {layoutMode === "list" ? (
           <Stack gap="md">
-            {repos.map((repo) => (
-              <ProjectCard key={repo.id} repo={repo} variant={cardVariant} />
+            {repos.map((repo, i) => (
+              <motion.div
+                key={repo.id}
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.05 }}
+              >
+                <ProjectCard repo={repo} variant={cardVariant} />
+              </motion.div>
             ))}
           </Stack>
         ) : (
@@ -82,8 +111,15 @@ export default function ProjectsPage() {
             cols={{ base: 1, sm: 2 }}
             spacing={{ base: "md", md: "lg" }}
           >
-            {repos.map((repo) => (
-              <ProjectCard key={repo.id} repo={repo} variant={cardVariant} />
+            {repos.map((repo, i) => (
+              <motion.div
+                key={repo.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
+              >
+                <ProjectCard repo={repo} variant={cardVariant} />
+              </motion.div>
             ))}
           </SimpleGrid>
         )}

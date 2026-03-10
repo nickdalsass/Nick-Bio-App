@@ -1,4 +1,7 @@
-import { Center, Button, Image, Anchor, Stack, Group, Container } from "@mantine/core";
+"use client";
+
+import { Center, Image, Anchor, Group, Container, Paper, Text } from "@mantine/core";
+import { motion } from "motion/react";
 
 const socialLinks = [
   {
@@ -26,40 +29,72 @@ function SocialCard({
   handle,
   src,
   alt,
+  index,
 }: {
   href: string;
   handle: string;
   src: string;
   alt: string;
+  index?: number;
 }) {
   return (
-    <Stack align="center" gap="xs">
-      <Anchor href={href} target="_blank" rel="noopener noreferrer">
-        <Button variant="transparent" w={120} h={120} p={0}>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, delay: (index ?? 0) * 0.1 }}
+      whileHover={{ scale: 1.08, y: -4 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <Anchor href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+        <Paper
+          p="lg"
+          radius={0}
+          style={{
+            border: "2px solid",
+            borderColor: "#fff #404040 #404040 #fff",
+            boxShadow: "inset 1px 1px 0 #fff",
+            background: "#c0c0c0",
+            width: 140,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
           <Image
-            w={80}
-            h={80}
+            w={64}
+            h={64}
             radius="md"
             src={src}
             alt={alt}
             style={{ objectFit: "contain" }}
           />
-        </Button>
+          <Text size="sm" c="dimmed" ta="center">
+            {handle}
+          </Text>
+        </Paper>
       </Anchor>
-      <span style={{ fontSize: "0.875rem", color: "var(--mantine-color-dimmed)" }}>
-        {handle}
-      </span>
-    </Stack>
+    </motion.div>
   );
 }
 
 const ConnectPage = () => {
   return (
     <Center style={{ minHeight: "70vh" }}>
-      <Container size="sm">
+      <Container size="md">
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          style={{ textAlign: "center", marginBottom: 24 }}
+        >
+          <Text size="sm" c="dimmed" mb="xl">
+            You&apos;ve got mail! Let&apos;s connect.
+          </Text>
+        </motion.div>
         <Group justify="center" gap="xl" wrap="wrap">
-          {socialLinks.map((link) => (
-            <SocialCard key={link.href} {...link} />
+          {socialLinks.map((link, i) => (
+            <SocialCard key={link.href} {...link} index={i} />
           ))}
         </Group>
       </Container>

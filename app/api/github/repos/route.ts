@@ -18,6 +18,13 @@ export interface GitHubRepo {
 
 const GITHUB_USER = process.env.GITHUB_USERNAME || "nickdalsass";
 
+const DISPLAY_OVERRIDES: Record<string, { displayName?: string; language?: string }> = {
+  "flowgo-ai": { displayName: "FlowGo AI", language: "Python" },
+  "recipe-project": { displayName: "Recipe Project", language: "TypeScript" },
+  "travel-planner": { displayName: "Travel Planner" },
+  "basic-morph-operations": { displayName: "Basic Morph Operations" },
+};
+
 export async function GET() {
   try {
     const res = await fetch(
@@ -38,24 +45,46 @@ export async function GET() {
     const data = await res.json();
 
     const PINNED_FORKS = ["recipe-project", "flowgo-ai"];
+    const PINNED_ORDER = ["recipe-project", "flowgo-ai", "travel-planner", "basic-morph-operations"];
     const PIN_AT_BOTTOM = "Nick-Bio-App";
 
     const includeRepo = (name: string, fork: boolean) =>
       !fork || PINNED_FORKS.includes(name.toLowerCase());
 
-    const allRepos = data
-      .filter(
-        (r: { owner: { login: string }; name: string; fork: boolean }) =>
-          r.owner?.login?.toLowerCase() === GITHUB_USER.toLowerCase() &&
-          includeRepo(r.name, r.fork)
-      )
-      .map((r: Record<string, unknown>) => ({
+    const filtered = data.filter(
+      (r: { owner: { login: string }; name: string; fork: boolean }) =>
+        r.owner?.login?.toLowerCase() === GITHUB_USER.toLowerCase() &&
+        includeRepo(r.name, r.fork)
+    );
+
+    const sorted = filtered.sort(
+      (a: { name: string }, b: { name: string }) => {
+        const aLower = (a.name as string).toLowerCase();
+        const bLower = (b.name as string).toLowerCase();
+        const aPinned = PINNED_ORDER.indexOf(aLower);
+        const bPinned = PINNED_ORDER.indexOf(bLower);
+        const aPinBottom = aLower === PIN_AT_BOTTOM.toLowerCase();
+        const bPinBottom = bLower === PIN_AT_BOTTOM.toLowerCase();
+
+        if (aPinned >= 0 && bPinned >= 0) return aPinned - bPinned;
+        if (aPinned >= 0) return -1;
+        if (bPinned >= 0) return 1;
+        if (aPinBottom && !bPinBottom) return 1;
+        if (!aPinBottom && bPinBottom) return -1;
+        return 0;
+      }
+    );
+
+    const sortedRepos = sorted.slice(0, 15).map((r: Record<string, unknown>) => {
+      const name = r.name as string;
+      const override = DISPLAY_OVERRIDES[name.toLowerCase()];
+      return {
         id: r.id,
-        name: r.name,
+        name: override?.displayName ?? name,
         full_name: r.full_name,
         description: r.description ?? null,
         html_url: r.html_url,
-        language: r.language ?? null,
+        language: (override?.language ?? r.language) as string | null,
         stargazers_count: r.stargazers_count ?? 0,
         forks_count: r.forks_count ?? 0,
         topics: r.topics ?? [],
@@ -63,28 +92,10 @@ export async function GET() {
         fork: r.fork,
         created_at: r.created_at,
         updated_at: r.updated_at,
-      }));
+      };
+    });
 
-    const repos = allRepos as GitHubRepo[];
-    const sortedRepos = repos
-      .sort((a: GitHubRepo, b: GitHubRepo) => {
-        const aLower = a.name.toLowerCase();
-        const bLower = b.name.toLowerCase();
-        const aPinnedTop = PINNED_FORKS.indexOf(aLower);
-        const bPinnedTop = PINNED_FORKS.indexOf(bLower);
-        const aPinBottom = aLower === PIN_AT_BOTTOM.toLowerCase();
-        const bPinBottom = bLower === PIN_AT_BOTTOM.toLowerCase();
-
-        if (aPinnedTop >= 0 && bPinnedTop >= 0) return aPinnedTop - bPinnedTop;
-        if (aPinnedTop >= 0) return -1;
-        if (bPinnedTop >= 0) return 1;
-        if (aPinBottom && !bPinBottom) return 1;
-        if (!aPinBottom && bPinBottom) return -1;
-        return 0;
-      })
-      .slice(0, 15);
-
-    return NextResponse.json(sortedRepos);
+    return NextResponse.json(sortedRepos as GitHubRepo[]);
   } catch (error) {
     console.error("Failed to fetch GitHub repos:", error);
     return NextResponse.json(

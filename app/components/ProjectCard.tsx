@@ -49,12 +49,12 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
         height: 170,
         overflow: "hidden",
       }}
-      className="project-card"
+      className="project-card retro-card"
     >
       <Stack gap="xs" style={{ height: "100%", minHeight: 0 }}>
         <Group justify="space-between" wrap="nowrap">
           <Text fw={700} size="lg" lineClamp={1}>
-            {repo.name.replace(/-/g, " ")}
+            {repo.name.includes(" ") ? repo.name : repo.name.replace(/-/g, " ")}
           </Text>
           <Badge size="xs" variant="dot" color={langColor}>
             {repo.language ?? "Other"}
@@ -79,13 +79,7 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
   );
 
   return (
-    <motion.div
-      style={{ height: "100%" }}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-    >
+    <motion.div style={{ height: "100%" }} whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
       {cardContent}
     </motion.div>
   );

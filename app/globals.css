@@ -12,7 +12,7 @@
 html,
 body {
   margin: 0;
-  background: var(--win95-desktop);
+  background: var(--win95-gray);
 }
 
 body {
@@ -29,7 +29,64 @@ body {
   }
 }
 
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes pixelBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 4px rgba(0, 0, 128, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 12px rgba(0, 0, 128, 0.5);
+  }
+}
+
 .fade-element {
   opacity: 0;
   animation: fadeIn 4s forwards;
+}
+
+/* Retro Win95 card hover - button press effect */
+.retro-card {
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.retro-card:hover {
+  box-shadow: inset 2px 2px 0 #404040, inset -1px -1px 0 #fff !important;
+  transform: translate(1px, 1px);
+}
+
+/* Subtle scanline overlay for retro CRT feel */
+.header-home-link:hover .header-title {
+  opacity: 0.9;
+  text-decoration: underline;
+}
+
+.retro-scanlines::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
 }

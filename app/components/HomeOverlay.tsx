@@ -1,10 +1,30 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Stack, Title, Container, Text } from "@mantine/core";
-import * as motion from "motion/react-client";
+import { motion, AnimatePresence } from "motion/react";
+
+const subtitleVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -12 },
+};
 
 const HomeOverlay = () => {
+  const [showEducation, setShowEducation] = useState(false);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    const start = setTimeout(() => {
+      setShowEducation(true);
+      interval = setInterval(() => setShowEducation((p) => !p), 6000);
+    }, 5000);
+    return () => {
+      clearTimeout(start);
+      if (interval) clearInterval(interval);
+    };
+  }, []);
   return (
     <Container size="lg" py="xl">
       <motion.div
@@ -97,6 +117,7 @@ const HomeOverlay = () => {
                 ta="center"
               >
                 Nicholas Dalsass
+                <span style={{ animation: "blink 1s step-end infinite", marginLeft: 2 }}>|</span>
               </Title>
             </motion.div>
           </motion.div>
@@ -111,13 +132,40 @@ const HomeOverlay = () => {
               transition={{ duration: 0.2 }}
               style={{ cursor: "default" }}
             >
-              <Text
-                size="lg"
-                c="dark"
-                ff="inherit"
-              >
-                Software Developer
-              </Text>
+              <Stack align="center" gap={4} style={{ minHeight: 72 }}>
+                <AnimatePresence mode="wait" initial={false}>
+                  {showEducation ? (
+                    <motion.div
+                      key="education"
+                      variants={subtitleVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Text size="lg" c="dark" ff="inherit" ta="center">
+                        Junior at the Catholic University of America
+                      </Text>
+                      <Text size="sm" c="dark.7" fw={500} ff="inherit" ta="center">
+                        Computer Science, Mathematics, & Philosophy
+                      </Text>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="developer"
+                      variants={subtitleVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Text size="lg" c="dark" ff="inherit">
+                        Software Developer
+                      </Text>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Stack>
             </motion.div>
           </motion.div>
         </Stack>
