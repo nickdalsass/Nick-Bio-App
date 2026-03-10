@@ -1,8 +1,8 @@
 "use client";
 
 import { Paper, Text, Group, Badge, Anchor, Stack } from "@mantine/core";
-import type { GitHubRepo } from "../api/github/repos/route";
-import * as motion from "motion/react-client";
+import type { GitHubRepo } from "@/app/types/github";
+import { motion } from "motion/react";
 
 const LANG_COLORS: Record<string, string> = {
   JavaScript: "#f7df1e",

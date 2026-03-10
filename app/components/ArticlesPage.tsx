@@ -1,22 +1,14 @@
 "use client";
 
 import { motion } from "motion/react";
-import {
-  SimpleGrid,
-  Stack,
-  Title,
-  Text,
-  Paper,
-  Anchor,
-  Group,
-  Container,
-} from "@mantine/core";
+import { SimpleGrid, Stack, Title, Group, Container } from "@mantine/core";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutMode } from "./LayoutContext";
+import ArticleCard from "./ArticleCard";
 
-type ArticleCategory = "computing" | "philosophy";
+export type ArticleCategory = "computing" | "philosophy";
 
-const ARTICLES: Array<{
+export interface Article {
   id: string;
   title: string;
   excerpt: string;
@@ -24,7 +16,9 @@ const ARTICLES: Array<{
   docId?: string;
   type: "gdoc" | "link";
   category: ArticleCategory;
-}> = [
+}
+
+const ARTICLES: Article[] = [
   {
     id: "1",
     title: "Homomorphic Encryption",
@@ -92,85 +86,6 @@ const SECTIONS: { key: ArticleCategory; title: string }[] = [
   { key: "philosophy", title: "Philosophical Essays" },
 ];
 
-interface ArticleCardProps {
-  title: string;
-  excerpt: string;
-  url: string;
-  type?: "gdoc" | "link";
-  layoutMode?: "grid" | "list";
-  index?: number;
-}
-
-function ArticleCard({ title, excerpt, url, type, layoutMode = "grid", index = 0 }: ArticleCardProps) {
-  const previewUrl = type === "gdoc" ? url : null;
-  const iframeHeight = layoutMode === "list" ? "min(70vh, 600px)" : "min(45vh, 400px)";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: index * 0.08 }}
-      whileHover={{ y: -3 }}
-      style={{ height: "100%" }}
-    >
-    <Paper
-      p="lg"
-      radius={0}
-      className="retro-card"
-      style={{
-        border: "2px solid",
-        borderColor: "#fff #404040 #404040 #fff",
-        boxShadow: "inset 1px 1px 0 #fff",
-        background: "#c0c0c0",
-        height: "100%",
-      }}
-    >
-      <Stack gap="sm">
-        <Group justify="space-between" wrap="nowrap" gap="xs">
-          <Title order={4} lineClamp={2} style={{ flex: 1, minWidth: 0 }}>
-            {title}
-          </Title>
-          <Anchor
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            size="xs"
-            style={{ flexShrink: 0 }}
-          >
-            Open in new tab
-          </Anchor>
-        </Group>
-        {excerpt && (
-          <Text size="sm" c="dimmed" lineClamp={2}>
-            {excerpt}
-          </Text>
-        )}
-        {previewUrl && (
-          <Paper
-            style={{
-              overflow: "hidden",
-              border: "1px solid #808080",
-            }}
-          >
-            <iframe
-              src={previewUrl}
-              title={title}
-              style={{
-                width: "100%",
-                height: iframeHeight,
-                minHeight: 320,
-                border: "none",
-                display: "block",
-              }}
-            />
-          </Paper>
-        )}
-      </Stack>
-    </Paper>
-    </motion.div>
-  );
-}
-
 const ArticlesPage = () => {
   const [layoutMode] = useLayoutMode();
 
@@ -187,14 +102,7 @@ const ArticlesPage = () => {
           </motion.div>
           <LayoutSwitcher />
         </Group>
-        <div
-          style={{
-            margin: "0 0 1rem",
-            borderTop: "2px solid #404040",
-            borderBottom: "1px solid #fff",
-            boxShadow: "0 1px 0 #808080",
-          }}
-        />
+        <div className="retro-divider" />
 
         {SECTIONS.map((section, sectionIdx) => {
           const sectionArticles = ARTICLES.filter((a) => a.category === section.key);
@@ -202,16 +110,7 @@ const ArticlesPage = () => {
 
           return (
             <Stack key={section.key} gap="md">
-              {sectionIdx > 0 && (
-                <div
-                  style={{
-                    margin: "1.5rem 0",
-                    borderTop: "2px solid #404040",
-                    borderBottom: "1px solid #fff",
-                    boxShadow: "0 1px 0 #808080",
-                  }}
-                />
-              )}
+              {sectionIdx > 0 && <div className="retro-divider retro-divider--section" />}
               <motion.div
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}

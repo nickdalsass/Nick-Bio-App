@@ -15,7 +15,7 @@ import {
 import ProjectCard from "./ProjectCard";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutMode } from "./LayoutContext";
-import type { GitHubRepo } from "../api/github/repos/route";
+import type { GitHubRepo } from "@/app/types/github";
 
 export default function ProjectsPage() {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);

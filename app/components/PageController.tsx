@@ -3,7 +3,14 @@ import { useEffect, useState } from "react";
 import { SegmentedControl } from "@mantine/core";
 import { useRouter, usePathname } from "next/navigation";
 
-const routeToSegment = {
+const SEGMENT_TO_ROUTE: Record<string, string> = {
+  Home: "/",
+  Projects: "/projects",
+  Articles: "/articles",
+  Connect: "/connect",
+};
+
+const ROUTE_TO_SEGMENT: Record<string, string> = {
   "/": "Home",
   "/projects": "Projects",
   "/articles": "Articles",
@@ -15,11 +22,9 @@ const PageController = () => {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
-  const currentPage = (routeToSegment as Record<string, string>)[pathname] || "Home";
+  const currentPage = ROUTE_TO_SEGMENT[pathname] ?? "Home";
 
   if (!mounted) return null;
 
@@ -35,12 +40,7 @@ const PageController = () => {
         boxShadow: "inset 2px 2px 2px #fff, inset -1px -1px 1px #404040",
       }}
       value={currentPage}
-      onChange={(selectedPage) => {
-        if (selectedPage === "Connect") router.push("/connect");
-        else if (selectedPage === "Projects") router.push("/projects");
-        else if (selectedPage === "Articles") router.push("/articles");
-        else if (selectedPage === "Home") router.push("/");
-      }}
+      onChange={(selected) => router.push(SEGMENT_TO_ROUTE[selected] ?? "/")}
       styles={{
         label: { color: "#000", position: "relative", zIndex: 1 },
         indicator: {

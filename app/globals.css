@@ -61,6 +61,16 @@ body {
   animation: fadeIn 4s forwards;
 }
 
+/* Win95-style etched divider */
+.retro-divider {
+  border-top: 1px solid var(--win95-shadow);
+  border-bottom: 1px solid var(--win95-highlight);
+  box-shadow: 0 1px 0 var(--win95-dark-gray);
+}
+.retro-divider--section {
+  margin: 1.5rem 0 0.75rem 0;
+}
+
 /* Retro Win95 card hover - button press effect */
 .retro-card {
   transition: box-shadow 0.15s ease, transform 0.15s ease;

@@ -3,25 +3,15 @@
 import { SegmentedControl } from "@mantine/core";
 import { useLayoutMode, type LayoutMode } from "./LayoutContext";
 
-interface LayoutSwitcherProps {
-  onChange?: (mode: LayoutMode) => void;
-}
-
-export default function LayoutSwitcher({ onChange }: LayoutSwitcherProps) {
+export default function LayoutSwitcher() {
   const [mode, setMode] = useLayoutMode();
-
-  const handleChange = (value: string) => {
-    const newMode = value as LayoutMode;
-    setMode(newMode);
-    onChange?.(newMode);
-  };
 
   return (
     <SegmentedControl
       size="sm"
       radius="md"
       value={mode}
-      onChange={handleChange}
+      onChange={(value) => setMode(value as LayoutMode)}
       data={[
         { label: "Grid", value: "grid" },
         { label: "List", value: "list" },

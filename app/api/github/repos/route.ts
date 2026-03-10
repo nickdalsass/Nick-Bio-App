@@ -1,20 +1,5 @@
 import { NextResponse } from "next/server";
-
-export interface GitHubRepo {
-  id: number;
-  name: string;
-  full_name: string;
-  description: string | null;
-  html_url: string;
-  language: string | null;
-  stargazers_count: number;
-  forks_count: number;
-  topics: string[];
-  homepage: string | null;
-  fork: boolean;
-  created_at: string;
-  updated_at: string;
-}
+import type { GitHubRepo } from "@/app/types/github";
 
 const GITHUB_USER = process.env.GITHUB_USERNAME || "nickdalsass";
 
@@ -23,7 +8,10 @@ const DISPLAY_OVERRIDES: Record<string, { displayName?: string; language?: strin
   "recipe-project": { displayName: "Recipe Project", language: "TypeScript" },
   "travel-planner": { displayName: "Travel Planner" },
   "basic-morph-operations": { displayName: "Basic Morph Operations" },
+  "compiler-project": { displayName: "Compiler Project" },
 };
+
+const EXCLUDED_REPOS = ["java-threading"];
 
 export async function GET() {
   try {
@@ -44,16 +32,20 @@ export async function GET() {
 
     const data = await res.json();
 
-    const PINNED_FORKS = ["recipe-project", "flowgo-ai"];
-    const PINNED_ORDER = ["recipe-project", "flowgo-ai", "travel-planner", "basic-morph-operations"];
+    const PINNED_FORKS = ["recipe-project", "flowgo-ai", "compiler-project"];
+    const PINNED_ORDER = ["recipe-project", "flowgo-ai", "travel-planner", "basic-morph-operations", "compiler-project"];
     const PIN_AT_BOTTOM = "Nick-Bio-App";
 
     const includeRepo = (name: string, fork: boolean) =>
       !fork || PINNED_FORKS.includes(name.toLowerCase());
 
+    const isExcluded = (name: string) =>
+      EXCLUDED_REPOS.includes(name.toLowerCase());
+
     const filtered = data.filter(
       (r: { owner: { login: string }; name: string; fork: boolean }) =>
         r.owner?.login?.toLowerCase() === GITHUB_USER.toLowerCase() &&
+        !isExcluded(r.name) &&
         includeRepo(r.name, r.fork)
     );
 
