@@ -56,22 +56,26 @@ function SocialCard({
       whileHover={{ scale: 1.08, y: -4 }}
       whileTap={{ scale: 0.98 }}
     >
-      <Anchor href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+      <Anchor
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: "none" }}
+      >
         <Paper
           p={{ base: "md", sm: "lg" }}
           radius={0}
           w={{ base: 120, sm: 140 }}
           style={SOCIAL_CARD_STYLE}
         >
-          <Image
-            w={64}
-            h={64}
-            radius="md"
-            src={src}
-            alt={alt}
-            style={{ objectFit: "contain" }}
-          />
-          <Text size="sm" c="dimmed" ta="center" lineClamp={1} style={{ overflow: "hidden", width: "100%" }}>
+          <Image w={64} h={64} radius="md" src={src} alt={alt} style={{ objectFit: "contain" }} />
+          <Text
+            size="sm"
+            c="dimmed"
+            ta="center"
+            lineClamp={1}
+            style={{ overflow: "hidden", width: "100%" }}
+          >
             {label}
           </Text>
         </Paper>
@@ -85,23 +89,23 @@ const ConnectPage = () => {
     <div className="connect-page-wrapper">
       <Center style={{ width: "100%", padding: "24px 0" }}>
         <Container size="md" px={{ base: 16, sm: 20 }} py={{ base: "md", md: "lg" }}>
-        <Stack align="center" gap="lg">
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            style={{ textAlign: "center" }}
-          >
-            <Text size="sm" c="dimmed">
-              You&apos;ve got mail! Let&apos;s connect.
-            </Text>
-          </motion.div>
-          <Group justify="center" gap="lg" wrap="wrap">
-            {socialLinks.map((link, i) => (
-              <SocialCard key={link.href} {...link} index={i} />
-            ))}
-          </Group>
-        </Stack>
+          <Stack align="center" gap="lg">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              style={{ textAlign: "center" }}
+            >
+              <Text size="sm" c="dimmed">
+                You&apos;ve got mail! Let&apos;s connect.
+              </Text>
+            </motion.div>
+            <Group justify="center" gap="lg" wrap="wrap">
+              {socialLinks.map((link, i) => (
+                <SocialCard key={link.href} {...link} index={i} />
+              ))}
+            </Group>
+          </Stack>
         </Container>
       </Center>
     </div>

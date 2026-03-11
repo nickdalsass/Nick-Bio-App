@@ -38,16 +38,19 @@ body.retro-scanlines,
 }
 
 @keyframes blink {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 1;
   }
-  51%, 100% {
+  51%,
+  100% {
     opacity: 0;
   }
 }
 
 @keyframes pixelBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -56,7 +59,8 @@ body.retro-scanlines,
 }
 
 @keyframes glow {
-  0%, 100% {
+  0%,
+  100% {
     text-shadow: 0 0 4px rgba(0, 0, 128, 0.3);
   }
   50% {
@@ -92,15 +96,21 @@ body.retro-scanlines,
 
 /* Retro Win95 card hover - button press effect */
 .retro-card {
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 .retro-card:hover {
-  box-shadow: inset 2px 2px 0 #404040, inset -1px -1px 0 #fff !important;
+  box-shadow:
+    inset 2px 2px 0 #404040,
+    inset -1px -1px 0 #fff !important;
   transform: translate(1px, 1px);
 }
 @media (pointer: coarse) {
   .retro-card:active {
-    box-shadow: inset 2px 2px 0 #404040, inset -1px -1px 0 #fff !important;
+    box-shadow:
+      inset 2px 2px 0 #404040,
+      inset -1px -1px 0 #fff !important;
     transform: translate(1px, 1px);
   }
 }

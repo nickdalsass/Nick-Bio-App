@@ -73,8 +73,7 @@ const ARTICLES: Article[] = [
   {
     id: "6",
     title: "Whether Eternal Matter Matters?",
-    excerpt:
-      "A brief investigation into St. Thomas Aquinas's views on the eternity of the world.",
+    excerpt: "A brief investigation into St. Thomas Aquinas's views on the eternity of the world.",
     url: "https://docs.google.com/document/d/1upRxz1fmhbyS39qIoCOp5FewUr29bdza1_geP4gk9d0/preview",
     docId: "1upRxz1fmhbyS39qIoCOp5FewUr29bdza1_geP4gk9d0",
     type: "gdoc",
@@ -93,7 +92,12 @@ const ArticlesPage = () => {
   const effectiveLayoutMode = isMobile ? "grid" : layoutMode;
 
   return (
-    <Container size="xl" py={{ base: "md", md: "xl" }} px={{ base: 16, sm: 20, md: 24 }} style={{ minHeight: "70vh" }}>
+    <Container
+      size="xl"
+      py={{ base: "md", md: "xl" }}
+      px={{ base: 16, sm: 20, md: 24 }}
+      style={{ minHeight: "70vh" }}
+    >
       <Stack gap="md">
         <Group justify="space-between" align="center" wrap="wrap" gap="sm">
           <motion.div
@@ -135,10 +139,7 @@ const ArticlesPage = () => {
                   ))}
                 </Stack>
               ) : (
-                <SimpleGrid
-                  cols={{ base: 1, sm: 2 }}
-                  spacing="md"
-                >
+                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
                   {sectionArticles.map((article, i) => (
                     <ArticleCard
                       key={article.id}

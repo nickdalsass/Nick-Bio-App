@@ -27,9 +27,7 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps) {
   const isMobile = useMediaQuery("(max-width: 47.99em)");
-  const langColor = repo.language
-    ? LANG_COLORS[repo.language] ?? "#94a3b8"
-    : "#94a3b8";
+  const langColor = repo.language ? (LANG_COLORS[repo.language] ?? "#94a3b8") : "#94a3b8";
 
   const cardContent = (
     <Anchor
@@ -39,41 +37,48 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
       underline="never"
       style={{ textDecoration: "none", color: "inherit" }}
     >
-    <Paper
-      p={{ base: "md", sm: "lg" }}
-      radius={0}
-      style={{
-        border: "2px solid",
-        borderColor: "#fff #404040 #404040 #fff",
-        boxShadow: "inset 1px 1px 0 #fff",
-        background: "#c0c0c0",
-        transition: "all 0.2s ease",
-        minHeight: isMobile ? 180 : 170,
-        height: isMobile ? "auto" : 170,
-        overflow: "hidden",
-      }}
-      className="project-card retro-card"
-    >
-      <Stack gap="xs" style={{ height: isMobile ? "auto" : "100%", minHeight: 0, flex: isMobile ? undefined : 1 }}>
-        <Group justify="space-between" wrap={variant === "list" || isMobile ? "wrap" : "nowrap"}>
-          <Text fw={700} size="lg" lineClamp={isMobile ? 2 : 1} style={{ minWidth: 0 }}>
-            {repo.name.includes(" ") ? repo.name : repo.name.replace(/-/g, " ")}
-          </Text>
-          <Badge size="xs" variant="dot" color={langColor}>
-            {repo.language ?? "Other"}
-          </Badge>
-        </Group>
-        {repo.description && (
-          <Text
-            size="sm"
-            c="dimmed"
-            lineClamp={isMobile ? 4 : 2}
-            style={{ overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}
-          >
-            {repo.description}
-          </Text>
-        )}
-        <Group gap="sm" mt="xs">
+      <Paper
+        p={{ base: "md", sm: "lg" }}
+        radius={0}
+        style={{
+          border: "2px solid",
+          borderColor: "#fff #404040 #404040 #fff",
+          boxShadow: "inset 1px 1px 0 #fff",
+          background: "#c0c0c0",
+          transition: "all 0.2s ease",
+          minHeight: isMobile ? 180 : 170,
+          height: isMobile ? "auto" : 170,
+          overflow: "hidden",
+        }}
+        className="project-card retro-card"
+      >
+        <Stack
+          gap="xs"
+          style={{
+            height: isMobile ? "auto" : "100%",
+            minHeight: 0,
+            flex: isMobile ? undefined : 1,
+          }}
+        >
+          <Group justify="space-between" wrap={variant === "list" || isMobile ? "wrap" : "nowrap"}>
+            <Text fw={700} size="lg" lineClamp={isMobile ? 2 : 1} style={{ minWidth: 0 }}>
+              {repo.name.includes(" ") ? repo.name : repo.name.replace(/-/g, " ")}
+            </Text>
+            <Badge size="xs" variant="dot" color={langColor}>
+              {repo.language ?? "Other"}
+            </Badge>
+          </Group>
+          {repo.description && (
+            <Text
+              size="sm"
+              c="dimmed"
+              lineClamp={isMobile ? 4 : 2}
+              style={{ overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}
+            >
+              {repo.description}
+            </Text>
+          )}
+          <Group gap="sm" mt="xs">
             <Text size="xs" c="dimmed">
               ★ {repo.stargazers_count}
             </Text>
@@ -81,8 +86,8 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
               ⎇ {repo.forks_count}
             </Text>
           </Group>
-      </Stack>
-    </Paper>
+        </Stack>
+      </Paper>
     </Anchor>
   );
 

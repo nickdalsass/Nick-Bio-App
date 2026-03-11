@@ -40,137 +40,128 @@ const HomeOverlay = () => {
             hidden: {},
           }}
         >
-          <Stack
-            align="center"
-            justify="center"
-            gap="md"
-            className="home-stack"
-          >
-        <motion.div
-          variants={{
-            visible: { opacity: 1, y: 0 },
-            hidden: { opacity: 0, y: 20 },
-          }}
-          whileHover={{ scale: 1.03 }}
-          transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          style={{ position: "relative" }}
-          onDragStart={(e) => e.preventDefault()}
-        >
-          <motion.div
-            style={{
-              position: "absolute",
-              inset: -4,
-              borderRadius: 8,
-              background: "transparent",
-              filter: "blur(8px)",
-            }}
-            initial={{ opacity: 0 }}
-            whileHover={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          />
-          <div className="home-avatar">
-            <Image
-              src="/LinkedInHeadshot.jpeg"
-              alt="Nicholas Dalsass"
-              width={560}
-              height={560}
-              sizes="(max-width: 48em) 200px, 280px"
-              quality={95}
-              priority
-              draggable={false}
-              onDragStart={(e) => e.preventDefault()}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                pointerEvents: "none",
-                userSelect: "none",
+          <Stack align="center" justify="center" gap="md" className="home-stack">
+            <motion.div
+              variants={{
+                visible: { opacity: 1, y: 0 },
+                hidden: { opacity: 0, y: 20 },
               }}
-            />
-          </div>
-        </motion.div>
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              style={{ position: "relative" }}
+              onDragStart={(e) => e.preventDefault()}
+            >
+              <motion.div
+                style={{
+                  position: "absolute",
+                  inset: -4,
+                  borderRadius: 8,
+                  background: "transparent",
+                  filter: "blur(8px)",
+                }}
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              />
+              <div className="home-avatar">
+                <Image
+                  src="/LinkedInHeadshot.jpeg"
+                  alt="Nicholas Dalsass"
+                  width={560}
+                  height={560}
+                  sizes="(max-width: 48em) 200px, 280px"
+                  quality={95}
+                  priority
+                  draggable={false}
+                  onDragStart={(e) => e.preventDefault()}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    pointerEvents: "none",
+                    userSelect: "none",
+                  }}
+                />
+              </div>
+            </motion.div>
 
-        <Stack align="center" gap="xs">
-          <motion.div
-            variants={{
-              visible: { opacity: 1, y: 0 },
-              hidden: { opacity: 0, y: 16 },
-            }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-              style={{ cursor: "default" }}
-            >
-              <Title
-                order={1}
-                size="2.5rem"
-                fw={500}
-                ff="inherit"
-                ta="center"
+            <Stack align="center" gap="xs">
+              <motion.div
+                variants={{
+                  visible: { opacity: 1, y: 0 },
+                  hidden: { opacity: 0, y: 16 },
+                }}
               >
-                Nicholas Dalsass
-                <span style={{ animation: "blink 1s step-end infinite", marginLeft: 2 }}>|</span>
-              </Title>
-            </motion.div>
-          </motion.div>
-          <motion.div
-            variants={{
-              visible: { opacity: 1, y: 0 },
-              hidden: { opacity: 0, y: 12 },
-            }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-              style={{ cursor: "default" }}
-            >
-              <Stack align="center" gap={4} style={{ minHeight: 48 }}>
-                <AnimatePresence mode="wait" initial={false}>
-                  {showEducation ? (
-                    <motion.div
-                      key="education"
-                      variants={subtitleVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Text
-                        size={isMobile ? "sm" : "lg"}
-                        c="dark"
-                        ff="inherit"
-                        ta="center"
-                        style={isMobile ? undefined : { whiteSpace: "nowrap" }}
-                      >
-                        CUA Junior · CS, Math & Philosophy
-                      </Text>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="developer"
-                      variants={subtitleVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Text
-                        size={isMobile ? "sm" : "lg"}
-                        c="dark"
-                        ff="inherit"
-                        ta="center"
-                        style={isMobile ? undefined : { whiteSpace: "nowrap" }}
-                      >
-                        Software Developer
-                      </Text>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </Stack>
-            </motion.div>
-          </motion.div>
-        </Stack>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ cursor: "default" }}
+                >
+                  <Title order={1} size="2.5rem" fw={500} ff="inherit" ta="center">
+                    Nicholas Dalsass
+                    <span style={{ animation: "blink 1s step-end infinite", marginLeft: 2 }}>
+                      |
+                    </span>
+                  </Title>
+                </motion.div>
+              </motion.div>
+              <motion.div
+                variants={{
+                  visible: { opacity: 1, y: 0 },
+                  hidden: { opacity: 0, y: 12 },
+                }}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ cursor: "default" }}
+                >
+                  <Stack align="center" gap={4} style={{ minHeight: 48 }}>
+                    <AnimatePresence mode="wait" initial={false}>
+                      {showEducation ? (
+                        <motion.div
+                          key="education"
+                          variants={subtitleVariants}
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Text
+                            size={isMobile ? "sm" : "lg"}
+                            c="dark"
+                            ff="inherit"
+                            ta="center"
+                            style={isMobile ? undefined : { whiteSpace: "nowrap" }}
+                          >
+                            CUA Junior · CS, Math & Philosophy
+                          </Text>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="developer"
+                          variants={subtitleVariants}
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Text
+                            size={isMobile ? "sm" : "lg"}
+                            c="dark"
+                            ff="inherit"
+                            ta="center"
+                            style={isMobile ? undefined : { whiteSpace: "nowrap" }}
+                          >
+                            Software Developer
+                          </Text>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </Stack>
+                </motion.div>
+              </motion.div>
+            </Stack>
           </Stack>
         </motion.div>
       </Container>

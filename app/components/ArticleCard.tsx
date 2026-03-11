@@ -33,7 +33,8 @@ export default function ArticleCard({
   const isDesktop = useMediaQuery("(min-width: 64em)");
   const showPreview = type === "gdoc" && isDesktop;
   const previewUrl = showPreview ? url : null;
-  const iframeClass = layoutMode === "list" ? "article-card-iframe-list" : "article-card-iframe-grid";
+  const iframeClass =
+    layoutMode === "list" ? "article-card-iframe-list" : "article-card-iframe-grid";
 
   return (
     <motion.div
@@ -78,11 +79,7 @@ export default function ArticleCard({
           )}
           {previewUrl && (
             <Paper style={{ overflow: "hidden", border: "1px solid #808080" }}>
-              <iframe
-                src={previewUrl}
-                title={title}
-                className={iframeClass}
-              />
+              <iframe src={previewUrl} title={title} className={iframeClass} />
             </Paper>
           )}
         </Stack>

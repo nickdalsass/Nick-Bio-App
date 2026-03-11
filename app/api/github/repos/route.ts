@@ -33,14 +33,19 @@ export async function GET() {
     const data = await res.json();
 
     const PINNED_FORKS = ["recipe-project", "flowgo-ai", "compiler-project"];
-    const PINNED_ORDER = ["recipe-project", "flowgo-ai", "travel-planner", "basic-morph-operations", "compiler-project"];
+    const PINNED_ORDER = [
+      "recipe-project",
+      "flowgo-ai",
+      "travel-planner",
+      "basic-morph-operations",
+      "compiler-project",
+    ];
     const PIN_AT_BOTTOM = "Nick-Bio-App";
 
     const includeRepo = (name: string, fork: boolean) =>
       !fork || PINNED_FORKS.includes(name.toLowerCase());
 
-    const isExcluded = (name: string) =>
-      EXCLUDED_REPOS.includes(name.toLowerCase());
+    const isExcluded = (name: string) => EXCLUDED_REPOS.includes(name.toLowerCase());
 
     const filtered = data.filter(
       (r: { owner: { login: string }; name: string; fork: boolean }) =>
@@ -49,23 +54,21 @@ export async function GET() {
         includeRepo(r.name, r.fork)
     );
 
-    const sorted = filtered.sort(
-      (a: { name: string }, b: { name: string }) => {
-        const aLower = (a.name as string).toLowerCase();
-        const bLower = (b.name as string).toLowerCase();
-        const aPinned = PINNED_ORDER.indexOf(aLower);
-        const bPinned = PINNED_ORDER.indexOf(bLower);
-        const aPinBottom = aLower === PIN_AT_BOTTOM.toLowerCase();
-        const bPinBottom = bLower === PIN_AT_BOTTOM.toLowerCase();
+    const sorted = filtered.sort((a: { name: string }, b: { name: string }) => {
+      const aLower = (a.name as string).toLowerCase();
+      const bLower = (b.name as string).toLowerCase();
+      const aPinned = PINNED_ORDER.indexOf(aLower);
+      const bPinned = PINNED_ORDER.indexOf(bLower);
+      const aPinBottom = aLower === PIN_AT_BOTTOM.toLowerCase();
+      const bPinBottom = bLower === PIN_AT_BOTTOM.toLowerCase();
 
-        if (aPinned >= 0 && bPinned >= 0) return aPinned - bPinned;
-        if (aPinned >= 0) return -1;
-        if (bPinned >= 0) return 1;
-        if (aPinBottom && !bPinBottom) return 1;
-        if (!aPinBottom && bPinBottom) return -1;
-        return 0;
-      }
-    );
+      if (aPinned >= 0 && bPinned >= 0) return aPinned - bPinned;
+      if (aPinned >= 0) return -1;
+      if (bPinned >= 0) return 1;
+      if (aPinBottom && !bPinBottom) return 1;
+      if (!aPinBottom && bPinBottom) return -1;
+      return 0;
+    });
 
     const sortedRepos = sorted.slice(0, 15).map((r: Record<string, unknown>) => {
       const name = r.name as string;
@@ -90,9 +93,6 @@ export async function GET() {
     return NextResponse.json(sortedRepos as GitHubRepo[]);
   } catch (error) {
     console.error("Failed to fetch GitHub repos:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch repositories" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch repositories" }, { status: 500 });
   }
 }

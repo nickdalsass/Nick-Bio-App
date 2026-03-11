@@ -75,12 +75,7 @@ export default function ResumeViewer() {
                 color: "inherit",
               }}
             >
-              <Paper
-                p="sm"
-                radius={0}
-                className="retro-card"
-                style={RESUME_BUTTON_STYLE}
-              >
+              <Paper p="sm" radius={0} className="retro-card" style={RESUME_BUTTON_STYLE}>
                 <Group gap="xs" wrap="nowrap">
                   <span style={{ fontSize: "1.25rem" }}>📄</span>
                   <Text size="sm" fw={600}>
@@ -91,12 +86,7 @@ export default function ResumeViewer() {
             </a>
           ) : (
             <UnstyledButton onClick={handleOpen} style={{ display: "block" }}>
-              <Paper
-                p="sm"
-                radius={0}
-                className="retro-card"
-                style={RESUME_BUTTON_STYLE}
-              >
+              <Paper p="sm" radius={0} className="retro-card" style={RESUME_BUTTON_STYLE}>
                 <Group gap="xs" wrap="nowrap">
                   <span style={{ fontSize: "1.25rem" }}>📄</span>
                   <Text size="sm" fw={600}>
@@ -110,7 +100,9 @@ export default function ResumeViewer() {
       )}
 
       {/* Modal - rendered via portal */}
-      {mounted && !isMobile && open &&
+      {mounted &&
+        !isMobile &&
+        open &&
         createPortal(
           <>
             <div

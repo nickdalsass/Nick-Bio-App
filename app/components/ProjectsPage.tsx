@@ -2,16 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import {
-  Center,
-  SimpleGrid,
-  Stack,
-  Title,
-  Text,
-  Loader,
-  Group,
-  Container,
-} from "@mantine/core";
+import { Center, SimpleGrid, Stack, Title, Text, Loader, Group, Container } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import ProjectCard from "./ProjectCard";
 import LayoutSwitcher from "./LayoutSwitcher";
@@ -38,7 +29,11 @@ export default function ProjectsPage() {
       })
       .catch((err) =>
         setError(
-          err instanceof Error ? err.message : typeof err === "string" ? err : "An unexpected error occurred"
+          err instanceof Error
+            ? err.message
+            : typeof err === "string"
+              ? err
+              : "An unexpected error occurred"
         )
       )
       .finally(() => setLoading(false));
@@ -56,8 +51,14 @@ export default function ProjectsPage() {
         >
           <Stack align="center" gap="md">
             <Loader size="lg" color="gray" />
-            <Text c="dimmed" size="sm">Fetching from GitHub...</Text>
-            <Text size="xs" c="dimmed" fs="italic">{`C:/Users/Nick/Projects > Loading Repos...`}</Text>
+            <Text c="dimmed" size="sm">
+              Fetching from GitHub...
+            </Text>
+            <Text
+              size="xs"
+              c="dimmed"
+              fs="italic"
+            >{`C:/Users/Nick/Projects > Loading Repos...`}</Text>
           </Stack>
         </motion.div>
       </Center>
@@ -75,7 +76,12 @@ export default function ProjectsPage() {
   }
 
   return (
-    <Container size="xl" py={{ base: "md", md: "xl" }} px={{ base: 16, sm: 20, md: 24 }} style={{ minHeight: "70vh" }}>
+    <Container
+      size="xl"
+      py={{ base: "md", md: "xl" }}
+      px={{ base: 16, sm: 20, md: 24 }}
+      style={{ minHeight: "70vh" }}
+    >
       <Stack gap="md">
         <Group justify="space-between" align="center" wrap="wrap" gap="sm">
           <motion.div
@@ -103,10 +109,7 @@ export default function ProjectsPage() {
             ))}
           </Stack>
         ) : (
-          <SimpleGrid
-            cols={{ base: 1, sm: 2 }}
-            spacing="md"
-          >
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
             {repos.map((repo, i) => (
               <motion.div
                 key={repo.id}
