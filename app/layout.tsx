@@ -1,5 +1,5 @@
-import "./globals.css";
 import "@mantine/core/styles.css";
+import "./globals.css";
 import Link from "next/link";
 import {
   AppShell,
