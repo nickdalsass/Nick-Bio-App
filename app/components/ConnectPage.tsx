@@ -1,24 +1,24 @@
 "use client";
 
-import { Center, Image, Anchor, Group, Container, Paper, Text } from "@mantine/core";
+import { Center, Image, Anchor, Group, Container, Paper, Text, Stack } from "@mantine/core";
 import { motion } from "motion/react";
 
 const socialLinks = [
   {
     href: "https://www.linkedin.com/in/nicholasdalsass/",
-    handle: "@nicholasdalsass",
+    label: "LinkedIn",
     src: "/LinkedInIcon.webp",
     alt: "LinkedIn Logo",
   },
   {
     href: "https://github.com/nickdalsass",
-    handle: "@nickdalsass",
+    label: "GitHub",
     src: "/GitHubLogo.png",
     alt: "GitHub Logo",
   },
   {
     href: "https://discord.com/users/1415143148585353246",
-    handle: "@nickdalsass",
+    label: "Discord",
     src: "/DiscordLogo.jpg",
     alt: "Discord Logo",
   },
@@ -26,13 +26,13 @@ const socialLinks = [
 
 function SocialCard({
   href,
-  handle,
+  label,
   src,
   alt,
   index,
 }: {
   href: string;
-  handle: string;
+  label: string;
   src: string;
   alt: string;
   index?: number;
@@ -47,14 +47,14 @@ function SocialCard({
     >
       <Anchor href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
         <Paper
-          p="lg"
+          p={{ base: "md", sm: "lg" }}
           radius={0}
+          w={{ base: 120, sm: 140 }}
           style={{
             border: "2px solid",
             borderColor: "#fff #404040 #404040 #fff",
             boxShadow: "inset 1px 1px 0 #fff",
             background: "#c0c0c0",
-            width: 140,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -69,8 +69,8 @@ function SocialCard({
             alt={alt}
             style={{ objectFit: "contain" }}
           />
-          <Text size="sm" c="dimmed" ta="center">
-            {handle}
+          <Text size="sm" c="dimmed" ta="center" lineClamp={1} style={{ overflow: "hidden", width: "100%" }}>
+            {label}
           </Text>
         </Paper>
       </Anchor>
@@ -80,23 +80,25 @@ function SocialCard({
 
 const ConnectPage = () => {
   return (
-    <Center style={{ minHeight: "70vh" }}>
-      <Container size="md">
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          style={{ textAlign: "center", marginBottom: 24 }}
-        >
-          <Text size="sm" c="dimmed" mb="xl">
-            You&apos;ve got mail! Let&apos;s connect.
-          </Text>
-        </motion.div>
-        <Group justify="center" gap="xl" wrap="wrap">
-          {socialLinks.map((link, i) => (
-            <SocialCard key={link.href} {...link} index={i} />
-          ))}
-        </Group>
+    <Center style={{ minHeight: "70vh", padding: "24px 0" }}>
+      <Container size="md" px={{ base: 16, sm: 20 }} py={{ base: "md", md: "lg" }}>
+        <Stack align="center" gap="lg">
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            style={{ textAlign: "center" }}
+          >
+            <Text size="sm" c="dimmed">
+              You&apos;ve got mail! Let&apos;s connect.
+            </Text>
+          </motion.div>
+          <Group justify="center" gap="lg" wrap="wrap">
+            {socialLinks.map((link, i) => (
+              <SocialCard key={link.href} {...link} index={i} />
+            ))}
+          </Group>
+        </Stack>
       </Container>
     </Center>
   );

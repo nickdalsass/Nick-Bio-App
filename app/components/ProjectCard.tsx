@@ -1,6 +1,7 @@
 "use client";
 
 import { Paper, Text, Group, Badge, Anchor, Stack } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import type { GitHubRepo } from "@/app/types/github";
 import { motion } from "motion/react";
 
@@ -25,6 +26,7 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps) {
+  const isMobile = useMediaQuery("(max-width: 47.99em)");
   const langColor = repo.language
     ? LANG_COLORS[repo.language] ?? "#94a3b8"
     : "#94a3b8";
@@ -38,7 +40,7 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
       style={{ textDecoration: "none", color: "inherit" }}
     >
     <Paper
-      p="lg"
+      p={{ base: "md", sm: "lg" }}
       radius={0}
       style={{
         border: "2px solid",
@@ -46,14 +48,15 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
         boxShadow: "inset 1px 1px 0 #fff",
         background: "#c0c0c0",
         transition: "all 0.2s ease",
-        height: 170,
+        minHeight: isMobile ? 180 : 170,
+        height: isMobile ? "auto" : 170,
         overflow: "hidden",
       }}
       className="project-card retro-card"
     >
-      <Stack gap="xs" style={{ height: "100%", minHeight: 0 }}>
-        <Group justify="space-between" wrap="nowrap">
-          <Text fw={700} size="lg" lineClamp={1}>
+      <Stack gap="xs" style={{ height: isMobile ? "auto" : "100%", minHeight: 0, flex: isMobile ? undefined : 1 }}>
+        <Group justify="space-between" wrap={isMobile ? "wrap" : "nowrap"}>
+          <Text fw={700} size="lg" lineClamp={isMobile ? 2 : 1} style={{ minWidth: 0 }}>
             {repo.name.includes(" ") ? repo.name : repo.name.replace(/-/g, " ")}
           </Text>
           <Badge size="xs" variant="dot" color={langColor}>
@@ -61,7 +64,12 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
           </Badge>
         </Group>
         {repo.description && (
-          <Text size="sm" c="dimmed" lineClamp={variant === "list" ? 2 : 2}>
+          <Text
+            size="sm"
+            c="dimmed"
+            lineClamp={isMobile ? 4 : 2}
+            style={{ overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}
+          >
             {repo.description}
           </Text>
         )}

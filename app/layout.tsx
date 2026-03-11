@@ -25,8 +25,9 @@ export default function RootLayout({
       <body className="retro-scanlines">
 <MantineProvider defaultColorScheme="light" theme={{ fontFamily: "Share Tech Mono, MS Sans Serif, Tahoma, sans-serif" }}>
             <LayoutProvider>
-            <AppShell ff={"inherit"} header={{ height: { base: 70, md: 100 } }}>
+            <AppShell ff={"inherit"} header={{ height: { base: 110, md: 100 } }}>
             <AppShellHeader
+              className="app-shell-header"
               withBorder={false}
               style={{
                 background: "#000080",
@@ -35,7 +36,7 @@ export default function RootLayout({
                 boxShadow: "inset 1px 1px 0 rgba(255,255,255,0.3)",
               }}
             >
-              <Group justify="space-between" align="center" wrap="wrap" gap="md" style={{ height: '100%', padding: '0 12px' }}>
+              <Group justify="space-between" align="center" wrap="wrap" gap="xs" className="header-group" style={{ height: "100%" }}>
                 <Link href="/" className="header-home-link" style={{ textDecoration: "none" }}>
                 <Title
                   ff={"inherit"}
@@ -52,7 +53,9 @@ export default function RootLayout({
                   Nicholas Dalsass
                 </Title>
               </Link>
-                <PageController />
+                <div className="header-nav-wrap">
+                  <PageController />
+                </div>
               </Group>
             </AppShellHeader>
             <AppShellMain

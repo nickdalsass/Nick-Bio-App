@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Stack, Title, Container, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { motion, AnimatePresence } from "motion/react";
 
 const subtitleVariants = {
@@ -13,6 +14,7 @@ const subtitleVariants = {
 
 const HomeOverlay = () => {
   const [showEducation, setShowEducation] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 47.99em)");
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
@@ -26,7 +28,7 @@ const HomeOverlay = () => {
     };
   }, []);
   return (
-    <Container size="lg" py="xl">
+    <Container size="lg" py={{ base: "md", md: "xl" }} px={{ base: 16, sm: 20, md: 24 }}>
       <motion.div
         initial="hidden"
         animate="visible"
@@ -40,8 +42,8 @@ const HomeOverlay = () => {
       <Stack
         align="center"
         justify="center"
-        gap="xl"
-        style={{ minHeight: "calc(100vh - 150px)" }}
+        gap="md"
+        className="home-stack"
       >
         <motion.div
           variants={{
@@ -65,23 +67,13 @@ const HomeOverlay = () => {
             whileHover={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           />
-          <div
-            style={{
-              position: "relative",
-              width: 280,
-              height: 280,
-              overflow: "hidden",
-              borderRadius: 4,
-              border: "3px solid #808080",
-              flexShrink: 0,
-            }}
-          >
+          <div className="home-avatar">
             <Image
               src="/LinkedInHeadshot.jpeg"
               alt="Nicholas Dalsass"
               width={560}
               height={560}
-              sizes="280px"
+              sizes="(max-width: 48em) 200px, 280px"
               quality={95}
               priority
               draggable={false}
@@ -132,7 +124,7 @@ const HomeOverlay = () => {
               transition={{ duration: 0.2 }}
               style={{ cursor: "default" }}
             >
-              <Stack align="center" gap={4} style={{ minHeight: 72 }}>
+              <Stack align="center" gap={4} style={{ minHeight: 48 }}>
                 <AnimatePresence mode="wait" initial={false}>
                   {showEducation ? (
                     <motion.div
@@ -143,11 +135,17 @@ const HomeOverlay = () => {
                       exit="exit"
                       transition={{ duration: 0.3 }}
                     >
-                      <Text size="lg" c="dark" ff="inherit" ta="center">
-                        Junior at the Catholic University of America
-                      </Text>
-                      <Text size="sm" c="dark.7" fw={500} ff="inherit" ta="center">
-                        Computer Science, Mathematics, & Philosophy
+                      <Text
+                        size={isMobile ? "sm" : "lg"}
+                        c="dark"
+                        ff="inherit"
+                        ta="center"
+                        maw={isMobile ? 240 : undefined}
+                        style={isMobile ? undefined : { whiteSpace: "nowrap" }}
+                      >
+                        {isMobile
+                          ? "CUA Junior · CS, Math & Phil"
+                          : "CUA Junior · CS, Math & Philosophy"}
                       </Text>
                     </motion.div>
                   ) : (
@@ -159,7 +157,13 @@ const HomeOverlay = () => {
                       exit="exit"
                       transition={{ duration: 0.3 }}
                     >
-                      <Text size="lg" c="dark" ff="inherit">
+                      <Text
+                        size={isMobile ? "sm" : "lg"}
+                        c="dark"
+                        ff="inherit"
+                        ta="center"
+                        style={isMobile ? undefined : { whiteSpace: "nowrap" }}
+                      >
                         Software Developer
                       </Text>
                     </motion.div>

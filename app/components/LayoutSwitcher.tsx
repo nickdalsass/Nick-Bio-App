@@ -8,7 +8,7 @@ export default function LayoutSwitcher() {
 
   return (
     <SegmentedControl
-      size="sm"
+      size="md"
       radius="md"
       value={mode}
       onChange={(value) => setMode(value as LayoutMode)}

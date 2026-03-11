@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { Paper, Text, Group, UnstyledButton, Loader } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 const RESUME_PATH = "/resume.pdf";
 
@@ -12,6 +14,9 @@ export default function ResumeViewer() {
   const [mounted, setMounted] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(true);
   const [phaseInComplete, setPhaseInComplete] = useState(false);
+  const pathname = usePathname();
+  const isMobile = useMediaQuery("(max-width: 47.99em)");
+  const hideOnMobile = isMobile && (pathname === "/projects" || pathname === "/articles");
 
   useEffect(() => setMounted(true), []);
 
@@ -33,40 +38,41 @@ export default function ResumeViewer() {
 
   return (
     <>
-      {/* Floating button */}
-      <div
-        style={{
-          position: "fixed",
-          right: 20,
-          bottom: 24,
-          zIndex: 100,
-        }}
-      >
-        <UnstyledButton onClick={handleOpen} style={{ display: "block" }}>
-          <Paper
-            p="sm"
-            radius={0}
-            style={{
-              border: "2px solid",
-              borderColor: "#fff #404040 #404040 #fff",
-              boxShadow: "inset 1px 1px 0 #fff, 2px 2px 4px rgba(0,0,0,0.2)",
-              background: "#c0c0c0",
-              cursor: "pointer",
-            }}
-          >
-            <Group gap="xs" wrap="nowrap">
-              <span style={{ fontSize: "1.25rem" }}>📄</span>
-              <Text size="sm" fw={600}>
-                My Resume
-              </Text>
-            </Group>
-          </Paper>
-        </UnstyledButton>
-      </div>
+      {/* Floating button - hidden on mobile Projects/Articles pages */}
+      {!hideOnMobile && (
+        <div
+          style={{
+            position: "fixed",
+            right: 20,
+            bottom: 24,
+            zIndex: 100,
+          }}
+        >
+          <UnstyledButton onClick={handleOpen} style={{ display: "block" }}>
+            <Paper
+              p="sm"
+              radius={0}
+              style={{
+                border: "2px solid",
+                borderColor: "#fff #404040 #404040 #fff",
+                boxShadow: "inset 1px 1px 0 #fff, 2px 2px 4px rgba(0,0,0,0.2)",
+                background: "#c0c0c0",
+                cursor: "pointer",
+              }}
+            >
+              <Group gap="xs" wrap="nowrap">
+                <span style={{ fontSize: "1.25rem" }}>📄</span>
+                <Text size="sm" fw={600}>
+                  My Resume
+                </Text>
+              </Group>
+            </Paper>
+          </UnstyledButton>
+        </div>
+      )}
 
       {/* Modal - rendered via portal */}
-      {mounted &&
-        open &&
+      {mounted && open &&
         createPortal(
           <>
             <div

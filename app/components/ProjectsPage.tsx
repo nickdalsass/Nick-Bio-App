@@ -12,6 +12,7 @@ import {
   Group,
   Container,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import ProjectCard from "./ProjectCard";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutMode } from "./LayoutContext";
@@ -22,6 +23,8 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [layoutMode] = useLayoutMode();
+  const isMobile = useMediaQuery("(max-width: 47.99em)");
+  const effectiveLayoutMode = isMobile ? "grid" : layoutMode;
 
   useEffect(() => {
     fetch("/api/github/repos")
@@ -41,7 +44,7 @@ export default function ProjectsPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const cardVariant = layoutMode === "list" ? "list" : "card";
+  const cardVariant = effectiveLayoutMode === "list" ? "list" : "card";
 
   if (loading) {
     return (
@@ -72,9 +75,9 @@ export default function ProjectsPage() {
   }
 
   return (
-    <Container size="xl" py="xl" style={{ minHeight: "70vh", background: "#c0c0c0" }}>
-      <Stack gap="xl">
-        <Group justify="space-between" align="center" wrap="wrap" gap="md">
+    <Container size="xl" py={{ base: "md", md: "xl" }} px={{ base: 16, sm: 20, md: 24 }} style={{ minHeight: "70vh", background: "#c0c0c0" }}>
+      <Stack gap="md">
+        <Group justify="space-between" align="center" wrap="wrap" gap="sm">
           <motion.div
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
@@ -82,18 +85,11 @@ export default function ProjectsPage() {
           >
             <Title order={2}>Projects</Title>
           </motion.div>
-          <LayoutSwitcher />
+          {!isMobile && <LayoutSwitcher />}
         </Group>
-        <div
-          style={{
-            margin: "0 0 1rem",
-            borderTop: "2px solid #404040",
-            borderBottom: "1px solid #fff",
-            boxShadow: "0 1px 0 #808080",
-          }}
-        />
+        <div className="retro-divider" />
 
-        {layoutMode === "list" ? (
+        {effectiveLayoutMode === "list" ? (
           <Stack gap="md">
             {repos.map((repo, i) => (
               <motion.div
@@ -109,7 +105,7 @@ export default function ProjectsPage() {
         ) : (
           <SimpleGrid
             cols={{ base: 1, sm: 2 }}
-            spacing={{ base: "md", md: "lg" }}
+            spacing="md"
           >
             {repos.map((repo, i) => (
               <motion.div

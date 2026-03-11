@@ -30,9 +30,9 @@ const PageController = () => {
 
   return (
     <SegmentedControl
-      size="lg"
+      size="md"
       radius="lg"
-      mr={20}
+      className="page-controller"
       withItemsBorders={false}
       style={{
         background: "#c0c0c0",

@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { SimpleGrid, Stack, Title, Group, Container } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutMode } from "./LayoutContext";
 import ArticleCard from "./ArticleCard";
@@ -63,7 +64,7 @@ const ARTICLES: Article[] = [
     id: "5",
     title: "Reason: A Missing Link",
     excerpt:
-      "This paper investigates claims about reason, Naturalism and Supernaturalism in C.S. Lewis's Miracles contrasts these claims with those of John McDowell, a contemporary philosopher.",
+      "This paper investigates claims about reason, Naturalism, and Supernaturalism in C.S. Lewis's Miracles and contrasts them with those of John McDowell, a contemporary philosopher.",
     url: "https://docs.google.com/document/d/1B33m6goNq4aqI-ucRJEZMSE8BrZgxydsnZA8dpEk2ng/preview",
     docId: "1B33m6goNq4aqI-ucRJEZMSE8BrZgxydsnZA8dpEk2ng",
     type: "gdoc",
@@ -88,11 +89,13 @@ const SECTIONS: { key: ArticleCategory; title: string }[] = [
 
 const ArticlesPage = () => {
   const [layoutMode] = useLayoutMode();
+  const isMobile = useMediaQuery("(max-width: 47.99em)");
+  const effectiveLayoutMode = isMobile ? "grid" : layoutMode;
 
   return (
-    <Container size="xl" py="xl" style={{ minHeight: "70vh" }}>
-      <Stack gap="xl">
-        <Group justify="space-between" align="center" wrap="wrap" gap="md">
+    <Container size="xl" py={{ base: "md", md: "xl" }} px={{ base: 16, sm: 20, md: 24 }} style={{ minHeight: "70vh" }}>
+      <Stack gap="md">
+        <Group justify="space-between" align="center" wrap="wrap" gap="sm">
           <motion.div
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
@@ -100,7 +103,7 @@ const ArticlesPage = () => {
           >
             <Title order={2}>Articles</Title>
           </motion.div>
-          <LayoutSwitcher />
+          {!isMobile && <LayoutSwitcher />}
         </Group>
         <div className="retro-divider" />
 
@@ -120,8 +123,8 @@ const ArticlesPage = () => {
                   {section.title}
                 </Title>
               </motion.div>
-              {layoutMode === "list" ? (
-                <Stack gap="xl">
+              {effectiveLayoutMode === "list" ? (
+                <Stack gap="md">
                   {sectionArticles.map((article, i) => (
                     <ArticleCard
                       key={article.id}
@@ -134,7 +137,7 @@ const ArticlesPage = () => {
               ) : (
                 <SimpleGrid
                   cols={{ base: 1, sm: 2 }}
-                  spacing={{ base: "lg", md: "xl" }}
+                  spacing="md"
                 >
                   {sectionArticles.map((article, i) => (
                     <ArticleCard

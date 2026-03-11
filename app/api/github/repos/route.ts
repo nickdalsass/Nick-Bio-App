@@ -8,7 +8,7 @@ const DISPLAY_OVERRIDES: Record<string, { displayName?: string; language?: strin
   "recipe-project": { displayName: "Recipe Project", language: "TypeScript" },
   "travel-planner": { displayName: "Travel Planner" },
   "basic-morph-operations": { displayName: "Basic Morph Operations" },
-  "compiler-project": { displayName: "Compiler Project" },
+  "compiler-project": { displayName: "Compiler Project", language: "Java" },
 };
 
 const EXCLUDED_REPOS = ["java-threading"];

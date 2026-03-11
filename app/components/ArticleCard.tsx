@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "motion/react";
 import { Paper, Stack, Group, Title, Text, Anchor } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { motion } from "motion/react";
 
 export interface ArticleCardProps {
   title: string;
@@ -27,8 +28,10 @@ export default function ArticleCard({
   layoutMode = "grid",
   index = 0,
 }: ArticleCardProps) {
-  const previewUrl = type === "gdoc" ? url : null;
-  const iframeHeight = layoutMode === "list" ? "min(70vh, 600px)" : "min(45vh, 400px)";
+  const isMobile = useMediaQuery("(max-width: 47.99em)");
+  const showPreview = type === "gdoc" && !isMobile;
+  const previewUrl = showPreview ? url : null;
+  const iframeClass = layoutMode === "list" ? "article-card-iframe-list" : "article-card-iframe-grid";
 
   return (
     <motion.div
@@ -39,7 +42,7 @@ export default function ArticleCard({
       style={{ height: "100%" }}
     >
       <Paper
-        p="lg"
+        p={{ base: "md", sm: "lg" }}
         radius={0}
         className="retro-card"
         style={{ ...RETRO_CARD_STYLE, height: "100%" }}
@@ -55,12 +58,19 @@ export default function ArticleCard({
               rel="noopener noreferrer"
               size="xs"
               style={{ flexShrink: 0 }}
+              py={4}
+              px={4}
             >
               Open in new tab
             </Anchor>
           </Group>
           {excerpt && (
-            <Text size="sm" c="dimmed" lineClamp={2}>
+            <Text
+              size="sm"
+              c="dimmed"
+              lineClamp={isMobile ? undefined : 2}
+              style={isMobile ? undefined : { overflow: "hidden", textOverflow: "ellipsis" }}
+            >
               {excerpt}
             </Text>
           )}
@@ -69,13 +79,7 @@ export default function ArticleCard({
               <iframe
                 src={previewUrl}
                 title={title}
-                style={{
-                  width: "100%",
-                  height: iframeHeight,
-                  minHeight: 320,
-                  border: "none",
-                  display: "block",
-                }}
+                className={iframeClass}
               />
             </Paper>
           )}
