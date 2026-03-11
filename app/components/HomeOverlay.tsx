@@ -28,23 +28,24 @@ const HomeOverlay = () => {
     };
   }, []);
   return (
-    <Container size="lg" py={{ base: "md", md: "xl" }} px={{ base: 16, sm: 20, md: 24 }}>
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={{
-          visible: {
-            transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-          },
-          hidden: {},
-        }}
-      >
-      <Stack
-        align="center"
-        justify="center"
-        gap="md"
-        className="home-stack"
-      >
+    <div className="home-page-wrapper">
+      <Container size="lg" px={{ base: 16, sm: 20, md: 24 }} className="home-page-container">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+            },
+            hidden: {},
+          }}
+        >
+          <Stack
+            align="center"
+            justify="center"
+            gap="md"
+            className="home-stack"
+          >
         <motion.div
           variants={{
             visible: { opacity: 1, y: 0 },
@@ -140,12 +141,9 @@ const HomeOverlay = () => {
                         c="dark"
                         ff="inherit"
                         ta="center"
-                        maw={isMobile ? 240 : undefined}
                         style={isMobile ? undefined : { whiteSpace: "nowrap" }}
                       >
-                        {isMobile
-                          ? "CUA Junior · CS, Math & Phil"
-                          : "CUA Junior · CS, Math & Philosophy"}
+                        CUA Junior · CS, Math & Philosophy
                       </Text>
                     </motion.div>
                   ) : (
@@ -173,9 +171,10 @@ const HomeOverlay = () => {
             </motion.div>
           </motion.div>
         </Stack>
-      </Stack>
-      </motion.div>
-    </Container>
+          </Stack>
+        </motion.div>
+      </Container>
+    </div>
   );
 };
 

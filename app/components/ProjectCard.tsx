@@ -55,7 +55,7 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
       className="project-card retro-card"
     >
       <Stack gap="xs" style={{ height: isMobile ? "auto" : "100%", minHeight: 0, flex: isMobile ? undefined : 1 }}>
-        <Group justify="space-between" wrap={isMobile ? "wrap" : "nowrap"}>
+        <Group justify="space-between" wrap={variant === "list" || isMobile ? "wrap" : "nowrap"}>
           <Text fw={700} size="lg" lineClamp={isMobile ? 2 : 1} style={{ minWidth: 0 }}>
             {repo.name.includes(" ") ? repo.name : repo.name.replace(/-/g, " ")}
           </Text>

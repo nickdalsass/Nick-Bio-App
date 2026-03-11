@@ -104,45 +104,78 @@ body {
   text-decoration: underline;
 }
 
-/* Responsive header - stacked layout on mobile to prevent scrunching */
+/* Responsive header - stacked layout on mobile to prevent scrunching
+   Breakpoint: 47.99em (768px) = mobile, 48em+ = desktop */
 .header-group {
   padding: 0 12px;
   flex-direction: row;
   flex-wrap: wrap;
+  min-width: 0;
+  width: 100%;
 }
 .header-nav-wrap {
   margin-right: 12px;
+  min-width: 0;
 }
 @media (max-width: 47.99em) {
   .app-shell-header {
     min-height: 70px;
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
   }
   .header-group {
     flex-direction: column;
     align-items: stretch;
-    padding: 10px 12px 12px;
-    gap: 10px;
+    padding: 8px 0 10px;
+    gap: 6px;
     min-height: 70px;
   }
   .header-title {
-    padding: 6px 12px !important;
+    padding: 4px 12px !important;
     text-align: center;
+    font-size: clamp(1.25rem, 5.5vw, 1.6rem) !important;
   }
-.header-nav-wrap {
-  margin-right: 0;
-  display: flex;
-  justify-content: center;
-}
+  .header-nav-wrap {
+    margin-right: 0;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 4px;
+  }
+  .header-nav-wrap::-webkit-scrollbar {
+    display: none;
+  }
+  .page-controller {
+    flex-shrink: 0;
+    max-width: 100%;
+  }
 }
 
-/* Home page - responsive minHeight and avatar (header 110px on mobile, 100px on desktop) */
-.home-stack {
-  min-height: calc(100vh - 110px);
+/* Home page - vertically centered between header and resume button
+   Header: 110px mobile, 100px desktop
+   Resume button: ~56px tall + 24px from bottom = 80px reserved
+   Use 100svh on mobile for consistent centering (avoids 100vh address bar jump) */
+.home-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100svh - 110px - 80px);
 }
 @media (min-width: 48em) {
-  .home-stack {
-    min-height: calc(100vh - 100px);
+  .home-page-wrapper {
+    min-height: calc(100vh - 100px - 80px);
   }
+}
+
+.home-page-container {
+  width: 100%;
+}
+
+.home-stack {
+  min-height: 0;
 }
 
 .home-avatar {

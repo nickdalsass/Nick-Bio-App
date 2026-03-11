@@ -48,7 +48,7 @@ export default function ProjectsPage() {
 
   if (loading) {
     return (
-      <Center style={{ minHeight: "70vh", background: "#c0c0c0" }}>
+      <Center style={{ minHeight: "70vh" }}>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -66,7 +66,7 @@ export default function ProjectsPage() {
 
   if (error) {
     return (
-      <Center style={{ minHeight: "70vh", background: "#c0c0c0" }}>
+      <Center style={{ minHeight: "70vh" }}>
         <Stack align="center" gap="md">
           <Text c="red">Failed to load projects: {error}</Text>
         </Stack>
@@ -75,7 +75,7 @@ export default function ProjectsPage() {
   }
 
   return (
-    <Container size="xl" py={{ base: "md", md: "xl" }} px={{ base: 16, sm: 20, md: 24 }} style={{ minHeight: "70vh", background: "#c0c0c0" }}>
+    <Container size="xl" py={{ base: "md", md: "xl" }} px={{ base: 16, sm: 20, md: 24 }} style={{ minHeight: "70vh" }}>
       <Stack gap="md">
         <Group justify="space-between" align="center" wrap="wrap" gap="sm">
           <motion.div

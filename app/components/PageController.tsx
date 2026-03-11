@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SegmentedControl } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useRouter, usePathname } from "next/navigation";
 
 const SEGMENT_TO_ROUTE: Record<string, string> = {
@@ -21,6 +22,7 @@ const PageController = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 47.99em)");
 
   useEffect(() => setMounted(true), []);
 
@@ -30,7 +32,7 @@ const PageController = () => {
 
   return (
     <SegmentedControl
-      size="md"
+      size={isMobile ? "sm" : "md"}
       radius="lg"
       className="page-controller"
       withItemsBorders={false}

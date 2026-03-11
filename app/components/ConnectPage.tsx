@@ -3,6 +3,17 @@
 import { Center, Image, Anchor, Group, Container, Paper, Text, Stack } from "@mantine/core";
 import { motion } from "motion/react";
 
+const SOCIAL_CARD_STYLE = {
+  border: "2px solid",
+  borderColor: "#fff #404040 #404040 #fff",
+  boxShadow: "inset 1px 1px 0 #fff",
+  background: "#c0c0c0",
+  display: "flex",
+  flexDirection: "column" as const,
+  alignItems: "center",
+  gap: 8,
+} as const;
+
 const socialLinks = [
   {
     href: "https://www.linkedin.com/in/nicholasdalsass/",
@@ -19,7 +30,7 @@ const socialLinks = [
   {
     href: "https://discord.com/users/1415143148585353246",
     label: "Discord",
-    src: "/DiscordLogo.jpg",
+    src: "/DiscordLogo.png",
     alt: "Discord Logo",
   },
 ];
@@ -50,16 +61,7 @@ function SocialCard({
           p={{ base: "md", sm: "lg" }}
           radius={0}
           w={{ base: 120, sm: 140 }}
-          style={{
-            border: "2px solid",
-            borderColor: "#fff #404040 #404040 #fff",
-            boxShadow: "inset 1px 1px 0 #fff",
-            background: "#c0c0c0",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 8,
-          }}
+          style={SOCIAL_CARD_STYLE}
         >
           <Image
             w={64}

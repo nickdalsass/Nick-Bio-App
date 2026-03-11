@@ -9,16 +9,32 @@ import { useMediaQuery } from "@mantine/hooks";
 
 const RESUME_PATH = "/resume.pdf";
 
+const RESUME_BUTTON_STYLE = {
+  border: "2px solid",
+  borderColor: "#fff #404040 #404040 #fff",
+  boxShadow: "inset 1px 1px 0 #fff, 2px 2px 4px rgba(0,0,0,0.2)",
+  background: "#c0c0c0",
+  cursor: "pointer",
+} as const;
+
 export default function ResumeViewer() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(true);
   const [phaseInComplete, setPhaseInComplete] = useState(false);
   const pathname = usePathname();
-  const isMobile = useMediaQuery("(max-width: 47.99em)");
+  /* Match small screens OR touch devices (hover: none) - ensures iPhone in landscape gets link */
+  const isMobileQuery = useMediaQuery("(max-width: 47.99em), (hover: none)");
+  /* Default to mobile (link) before hydration to avoid wrong button on first tap */
+  const isMobile = mounted ? isMobileQuery : true;
   const hideOnMobile = isMobile && (pathname === "/projects" || pathname === "/articles");
 
   useEffect(() => setMounted(true), []);
+
+  // Close modal if user resizes to mobile (modal never used on mobile)
+  useEffect(() => {
+    if (isMobile && open) setOpen(false);
+  }, [isMobile, open]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -43,36 +59,58 @@ export default function ResumeViewer() {
         <div
           style={{
             position: "fixed",
-            right: 20,
-            bottom: 24,
+            right: "max(20px, env(safe-area-inset-right))",
+            bottom: "max(24px, env(safe-area-inset-bottom))",
             zIndex: 100,
           }}
         >
-          <UnstyledButton onClick={handleOpen} style={{ display: "block" }}>
-            <Paper
-              p="sm"
-              radius={0}
+          {isMobile ? (
+            <a
+              href={RESUME_PATH}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                border: "2px solid",
-                borderColor: "#fff #404040 #404040 #fff",
-                boxShadow: "inset 1px 1px 0 #fff, 2px 2px 4px rgba(0,0,0,0.2)",
-                background: "#c0c0c0",
-                cursor: "pointer",
+                display: "block",
+                textDecoration: "none",
+                color: "inherit",
               }}
             >
-              <Group gap="xs" wrap="nowrap">
-                <span style={{ fontSize: "1.25rem" }}>📄</span>
-                <Text size="sm" fw={600}>
-                  My Resume
-                </Text>
-              </Group>
-            </Paper>
-          </UnstyledButton>
+              <Paper
+                p="sm"
+                radius={0}
+                className="retro-card"
+                style={RESUME_BUTTON_STYLE}
+              >
+                <Group gap="xs" wrap="nowrap">
+                  <span style={{ fontSize: "1.25rem" }}>📄</span>
+                  <Text size="sm" fw={600}>
+                    My Resume
+                  </Text>
+                </Group>
+              </Paper>
+            </a>
+          ) : (
+            <UnstyledButton onClick={handleOpen} style={{ display: "block" }}>
+              <Paper
+                p="sm"
+                radius={0}
+                className="retro-card"
+                style={RESUME_BUTTON_STYLE}
+              >
+                <Group gap="xs" wrap="nowrap">
+                  <span style={{ fontSize: "1.25rem" }}>📄</span>
+                  <Text size="sm" fw={600}>
+                    My Resume
+                  </Text>
+                </Group>
+              </Paper>
+            </UnstyledButton>
+          )}
         </div>
       )}
 
       {/* Modal - rendered via portal */}
-      {mounted && open &&
+      {mounted && !isMobile && open &&
         createPortal(
           <>
             <div
@@ -97,6 +135,9 @@ export default function ResumeViewer() {
               }}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="resume-modal-title"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25 }}
@@ -139,7 +180,7 @@ export default function ResumeViewer() {
                     minHeight: 28,
                   }}
                 >
-                  <Group gap="xs">
+                  <Group gap="xs" id="resume-modal-title">
                     <span style={{ fontSize: "1rem" }}>📄</span>
                     <Text size="sm" fw={600}>
                       Resume - Nicholas Dalsass

@@ -29,7 +29,9 @@ export default function ArticleCard({
   index = 0,
 }: ArticleCardProps) {
   const isMobile = useMediaQuery("(max-width: 47.99em)");
-  const showPreview = type === "gdoc" && !isMobile;
+  /* Only show gdoc preview on desktop (1024px+), not on iPads or medium screens */
+  const isDesktop = useMediaQuery("(min-width: 64em)");
+  const showPreview = type === "gdoc" && isDesktop;
   const previewUrl = showPreview ? url : null;
   const iframeClass = layoutMode === "list" ? "article-card-iframe-list" : "article-card-iframe-grid";
 
