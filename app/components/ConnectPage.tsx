@@ -82,8 +82,9 @@ function SocialCard({
 
 const ConnectPage = () => {
   return (
-    <Center style={{ minHeight: "70vh", padding: "24px 0" }}>
-      <Container size="md" px={{ base: 16, sm: 20 }} py={{ base: "md", md: "lg" }}>
+    <div className="connect-page-wrapper">
+      <Center style={{ width: "100%", padding: "24px 0" }}>
+        <Container size="md" px={{ base: 16, sm: 20 }} py={{ base: "md", md: "lg" }}>
         <Stack align="center" gap="lg">
           <motion.div
             initial={{ opacity: 0, y: 8 }}
@@ -101,8 +102,9 @@ const ConnectPage = () => {
             ))}
           </Group>
         </Stack>
-      </Container>
-    </Center>
+        </Container>
+      </Center>
+    </div>
   );
 };
 

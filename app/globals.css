@@ -105,10 +105,18 @@ body.retro-scanlines,
   }
 }
 
-/* Subtle scanline overlay for retro CRT feel */
+/* Header name link - hover underline on desktop, active-only on mobile (avoids sticky hover) */
 .header-home-link:hover .header-title {
   opacity: 0.9;
   text-decoration: underline;
+}
+@media (max-width: 47.99em) {
+  .header-home-link:hover .header-title {
+    text-decoration: none;
+  }
+  .header-home-link:active .header-title {
+    text-decoration: underline;
+  }
 }
 
 /* Responsive header - stacked layout on mobile to prevent scrunching
@@ -179,6 +187,20 @@ body.retro-scanlines,
 
 .home-page-container {
   width: 100%;
+}
+
+/* Connect page - vertically centered like home (header + resume button reserved) */
+.connect-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100svh - 110px - 80px);
+}
+@media (min-width: 48em) {
+  .connect-page-wrapper {
+    min-height: calc(100vh - 100px - 80px);
+  }
 }
 
 .home-stack {
