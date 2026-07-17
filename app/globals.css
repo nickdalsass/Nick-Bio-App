@@ -4,6 +4,8 @@
   --win95-gray: #c0c0c0;
   --win95-dark-gray: #808080;
   --win95-title: #000080;
+  /* Classic Win95 active title — solid navy */
+  --win95-title-bar: #000080;
   --win95-highlight: #ffffff;
   --win95-shadow: #404040;
   --win95-desktop: #ffffff;
@@ -46,6 +48,12 @@ body.retro-scanlines,
   100% {
     opacity: 0;
   }
+}
+
+/* Classic Win95/98 title bar — static navy → blue */
+.win95-title-bar {
+  background: var(--win95-title-bar);
+  color: #fff;
 }
 
 @keyframes pixelBounce {
@@ -188,10 +196,12 @@ body.retro-scanlines,
   align-items: center;
   justify-content: center;
   min-height: calc(100svh - 110px - 80px);
+  padding-top: 40px;
 }
 @media (min-width: 48em) {
   .home-page-wrapper {
     min-height: calc(100vh - 100px - 80px);
+    padding-top: 56px;
   }
 }
 
@@ -230,6 +240,59 @@ body.retro-scanlines,
   .home-avatar {
     width: 280px;
     height: 280px;
+  }
+}
+
+/* Internship logos — mini Win95 window under the home subtitle */
+.internship-shell {
+  margin-top: 8px;
+  width: min(100%, 340px);
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  box-shadow: inset 1px 1px 0 #fff;
+}
+.internship-shell-title {
+  background: var(--win95-title-bar);
+  padding: 3px 8px;
+}
+.internship-logo-tile {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 2px solid;
+  border-color: #808080 #fff #fff #808080;
+  box-shadow: inset 1px 1px 0 #404040;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+@media (min-width: 48em) {
+  .internship-logo-tile {
+    height: 64px;
+  }
+}
+.internship-logo-img {
+  width: auto;
+  height: 28px;
+  max-width: 120px;
+  object-fit: contain;
+}
+.internship-logo-img--lg {
+  height: 36px;
+  max-width: 150px;
+}
+@media (min-width: 48em) {
+  .internship-logo-img {
+    height: 34px;
+    max-width: 140px;
+  }
+  .internship-logo-img--lg {
+    height: 44px;
+    max-width: 170px;
   }
 }
 

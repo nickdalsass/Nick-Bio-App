@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Stack, Title, Container, Text } from "@mantine/core";
+import { Stack, Title, Container, Text, Group, Anchor } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -11,6 +11,17 @@ const subtitleVariants = {
   visible: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -12 },
 };
+
+const INTERNSHIPS = [
+  { src: "/Videa_Logo.png", alt: "Videa", name: "Videa", href: "https://videa.ai/" },
+  {
+    src: "/TransPerfect_Logo.avif",
+    alt: "TransPerfect",
+    name: "TransPerfect",
+    href: "https://www.transperfect.com/",
+    imgClass: "internship-logo-img--lg",
+  },
+] as const;
 
 const HomeOverlay = () => {
   const [showEducation, setShowEducation] = useState(false);
@@ -160,6 +171,53 @@ const HomeOverlay = () => {
                     </AnimatePresence>
                   </Stack>
                 </motion.div>
+              </motion.div>
+
+              <motion.div
+                variants={{
+                  visible: { opacity: 1, y: 0 },
+                  hidden: { opacity: 0, y: 12 },
+                }}
+                className="internship-shell"
+              >
+                <div className="internship-shell-title">
+                  <Text size="xs" ff="inherit" style={{ color: "#fff", letterSpacing: 0.5 }}>
+                    Previously at
+                  </Text>
+                </div>
+                <Group gap="sm" justify="center" wrap="nowrap" p="sm">
+                  {INTERNSHIPS.map((company, i) => (
+                    <Anchor
+                      key={company.name}
+                      href={company.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      underline="never"
+                      style={{ flex: 1, textDecoration: "none", color: "inherit" }}
+                    >
+                      <motion.div
+                        className="internship-logo-tile"
+                        whileHover={{ y: -2, transition: { type: "spring", stiffness: 400, damping: 22 } }}
+                        initial={{ opacity: 0, scale: 0.92 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 22,
+                          delay: 0.55 + i * 0.1,
+                        }}
+                      >
+                        <Image
+                          src={company.src}
+                          alt={company.alt}
+                          width={140}
+                          height={48}
+                          className={`internship-logo-img${"imgClass" in company ? ` ${company.imgClass}` : ""}`}
+                        />
+                      </motion.div>
+                    </Anchor>
+                  ))}
+                </Group>
               </motion.div>
             </Stack>
           </Stack>
