@@ -163,10 +163,9 @@ export default function ResumeViewer() {
                 <Group
                   justify="space-between"
                   align="center"
+                  className="win95-title-bar"
                   style={{
                     padding: "4px 6px",
-                    background: "#000080",
-                    color: "#fff",
                     border: "1px solid #fff",
                     borderBottom: "none",
                     minHeight: 28,

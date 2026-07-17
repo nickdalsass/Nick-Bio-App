@@ -40,13 +40,11 @@ export default function RootLayout({
           <LayoutProvider>
             <AppShell ff={"inherit"} header={{ height: { base: 110, md: 100 } }}>
               <AppShellHeader
-                className="app-shell-header"
+                className="app-shell-header win95-title-bar"
                 withBorder={false}
                 style={{
-                  background: "#000080",
-                  color: "#fff",
                   borderBottom: "2px solid #000080",
-                  boxShadow: "inset 1px 1px 0 rgba(255,255,255,0.3)",
+                  boxShadow: "inset 1px 1px 0 rgba(255,255,255,0.25)",
                 }}
               >
                 <Group
