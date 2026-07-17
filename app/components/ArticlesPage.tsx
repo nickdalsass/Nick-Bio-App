@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
 import { SimpleGrid, Stack, Title, Group, Container } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
@@ -86,10 +87,26 @@ const SECTIONS: { key: ArticleCategory; title: string }[] = [
   { key: "philosophy", title: "Philosophical Essays" },
 ];
 
+const GDOC_IDS = ARTICLES.filter((a) => a.type === "gdoc").map((a) => a.id);
+
 const ArticlesPage = () => {
   const [layoutMode] = useLayoutMode();
   const isMobile = useMediaQuery("(max-width: 47.99em)");
+  const isDesktop = useMediaQuery("(min-width: 64em)");
   const effectiveLayoutMode = isMobile ? "grid" : layoutMode;
+  const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
+
+  // ponytail: gate all loaders on slowest iframe; no timeout until stuck loads become a real issue
+  const docsReady = !isDesktop || GDOC_IDS.every((id) => loadedIds.has(id));
+
+  const onDocLoad = (id: string) => {
+    setLoadedIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+  };
 
   return (
     <Container
@@ -135,6 +152,8 @@ const ArticlesPage = () => {
                       {...article}
                       layoutMode="list"
                       index={sectionIdx * 10 + i}
+                      docsReady={docsReady}
+                      onDocLoad={onDocLoad}
                     />
                   ))}
                 </Stack>
@@ -146,6 +165,8 @@ const ArticlesPage = () => {
                       {...article}
                       layoutMode="grid"
                       index={sectionIdx * 10 + i}
+                      docsReady={docsReady}
+                      onDocLoad={onDocLoad}
                     />
                   ))}
                 </SimpleGrid>

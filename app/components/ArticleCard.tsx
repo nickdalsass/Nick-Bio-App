@@ -1,16 +1,19 @@
 "use client";
 
-import { Paper, Stack, Group, Title, Text, Anchor } from "@mantine/core";
+import { Paper, Stack, Group, Title, Text, Anchor, Loader } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { motion } from "motion/react";
 
 export interface ArticleCardProps {
+  id?: string;
   title: string;
   excerpt: string;
   url: string;
   type?: "gdoc" | "link";
   layoutMode?: "grid" | "list";
   index?: number;
+  docsReady?: boolean;
+  onDocLoad?: (id: string) => void;
 }
 
 const RETRO_CARD_STYLE = {
@@ -21,12 +24,15 @@ const RETRO_CARD_STYLE = {
 } as const;
 
 export default function ArticleCard({
+  id,
   title,
   excerpt,
   url,
   type = "gdoc",
   layoutMode = "grid",
   index = 0,
+  docsReady = true,
+  onDocLoad,
 }: ArticleCardProps) {
   const isMobile = useMediaQuery("(max-width: 47.99em)");
   /* Only show gdoc preview on desktop (1024px+), not on iPads or medium screens */
@@ -78,8 +84,28 @@ export default function ArticleCard({
             </Text>
           )}
           {previewUrl && (
-            <Paper style={{ overflow: "hidden", border: "1px solid #808080" }}>
-              <iframe src={previewUrl} title={title} className={iframeClass} />
+            <Paper style={{ overflow: "hidden", border: "1px solid #808080", position: "relative" }}>
+              {!docsReady && (
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "#fff",
+                    zIndex: 1,
+                  }}
+                >
+                  <Loader size="lg" color="gray" />
+                </div>
+              )}
+              <iframe
+                src={previewUrl}
+                title={title}
+                className={iframeClass}
+                onLoad={() => id && onDocLoad?.(id)}
+              />
             </Paper>
           )}
         </Stack>
