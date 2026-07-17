@@ -15,10 +15,11 @@ export interface Article {
   title: string;
   excerpt: string;
   url: string;
-  docId?: string;
-  type: "gdoc" | "link";
+  type: "pdf" | "link";
   category: ArticleCategory;
 }
+
+const pdf = (name: string) => `/articles/${encodeURIComponent(name)}`;
 
 const ARTICLES: Article[] = [
   {
@@ -26,9 +27,8 @@ const ARTICLES: Article[] = [
     title: "Homomorphic Encryption",
     excerpt:
       "An introductory research paper on homomorphic encryption, a rapidly advancing cryptography technique.",
-    url: "https://docs.google.com/document/d/1EDQuT9CxJ-gVdZ8jWAfSlE5PpZ01hDL6J9UmGL4gyKI/preview",
-    docId: "1EDQuT9CxJ-gVdZ8jWAfSlE5PpZ01hDL6J9UmGL4gyKI",
-    type: "gdoc",
+    url: pdf("Homomorphic Encryption Final Paper.pdf"),
+    type: "pdf",
     category: "computing",
   },
   {
@@ -36,9 +36,8 @@ const ARTICLES: Article[] = [
     title: "Modeling Autonomous Vehicles",
     excerpt:
       "Research paper covering the modeling of highway functionality in automated vehicles using finite automata.",
-    url: "https://docs.google.com/document/d/1NBAvv5JiQw-a9w_Z8hWeMqpVeHz5fktnbIzjHee8wsI/preview",
-    docId: "1NBAvv5JiQw-a9w_Z8hWeMqpVeHz5fktnbIzjHee8wsI",
-    type: "gdoc",
+    url: pdf("CSC212 Final Project.pdf"),
+    type: "pdf",
     category: "computing",
   },
   {
@@ -46,9 +45,8 @@ const ARTICLES: Article[] = [
     title: "Blender 3D-Rendering Project",
     excerpt:
       "Introductory Blender Project working with photogrammetry tools to model a given 3D object.",
-    url: "https://docs.google.com/document/d/1u2gcZYiIVxvm8n2kdDvFb4x0yOSrn3EiBpF5MnGGje8/preview",
-    docId: "1u2gcZYiIVxvm8n2kdDvFb4x0yOSrn3EiBpF5MnGGje8",
-    type: "gdoc",
+    url: pdf("CSC322_Final_Project_Report.pdf"),
+    type: "pdf",
     category: "computing",
   },
   {
@@ -56,9 +54,8 @@ const ARTICLES: Article[] = [
     title: "Simple Compiler in Java",
     excerpt:
       "This is a report recounting a group project on a simple compiler that grapples with some fundamental concepts of programming languages.",
-    url: "https://docs.google.com/document/d/1_9fKh5Kf_ynFQB0S8qzU0ZEt4yCEtyzZ6FQ44NTNMOw/preview",
-    docId: "1_9fKh5Kf_ynFQB0S8qzU0ZEt4yCEtyzZ6FQ44NTNMOw",
-    type: "gdoc",
+    url: pdf("Compiler Project Report.pdf"),
+    type: "pdf",
     category: "computing",
   },
   {
@@ -66,18 +63,16 @@ const ARTICLES: Article[] = [
     title: "Reason: A Missing Link",
     excerpt:
       "This paper investigates claims about reason, Naturalism, and Supernaturalism in C.S. Lewis's Miracles and contrasts them with those of John McDowell, a contemporary philosopher.",
-    url: "https://docs.google.com/document/d/1B33m6goNq4aqI-ucRJEZMSE8BrZgxydsnZA8dpEk2ng/preview",
-    docId: "1B33m6goNq4aqI-ucRJEZMSE8BrZgxydsnZA8dpEk2ng",
-    type: "gdoc",
+    url: pdf("Miracles Term Paper HSPH 203.pdf"),
+    type: "pdf",
     category: "philosophy",
   },
   {
     id: "6",
     title: "Whether Eternal Matter Matters?",
     excerpt: "A brief investigation into St. Thomas Aquinas's views on the eternity of the world.",
-    url: "https://docs.google.com/document/d/1upRxz1fmhbyS39qIoCOp5FewUr29bdza1_geP4gk9d0/preview",
-    docId: "1upRxz1fmhbyS39qIoCOp5FewUr29bdza1_geP4gk9d0",
-    type: "gdoc",
+    url: pdf("Thesis Final Take.pdf"),
+    type: "pdf",
     category: "philosophy",
   },
 ];
@@ -87,7 +82,7 @@ const SECTIONS: { key: ArticleCategory; title: string }[] = [
   { key: "philosophy", title: "Philosophical Essays" },
 ];
 
-const GDOC_IDS = ARTICLES.filter((a) => a.type === "gdoc").map((a) => a.id);
+const PREVIEW_IDS = ARTICLES.filter((a) => a.type === "pdf").map((a) => a.id);
 
 const ArticlesPage = () => {
   const [layoutMode] = useLayoutMode();
@@ -97,7 +92,7 @@ const ArticlesPage = () => {
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
 
   // ponytail: gate all loaders on slowest iframe; no timeout until stuck loads become a real issue
-  const docsReady = !isDesktop || GDOC_IDS.every((id) => loadedIds.has(id));
+  const docsReady = !isDesktop || PREVIEW_IDS.every((id) => loadedIds.has(id));
 
   const onDocLoad = (id: string) => {
     setLoadedIds((prev) => {

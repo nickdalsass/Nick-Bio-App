@@ -9,7 +9,7 @@ export interface ArticleCardProps {
   title: string;
   excerpt: string;
   url: string;
-  type?: "gdoc" | "link";
+  type?: "pdf" | "link" | "gdoc";
   layoutMode?: "grid" | "list";
   index?: number;
   docsReady?: boolean;
@@ -28,17 +28,21 @@ export default function ArticleCard({
   title,
   excerpt,
   url,
-  type = "gdoc",
+  type = "pdf",
   layoutMode = "grid",
   index = 0,
   docsReady = true,
   onDocLoad,
 }: ArticleCardProps) {
   const isMobile = useMediaQuery("(max-width: 47.99em)");
-  /* Only show gdoc preview on desktop (1024px+), not on iPads or medium screens */
+  /* Only show PDF preview on desktop (1024px+), not on iPads or medium screens */
   const isDesktop = useMediaQuery("(min-width: 64em)");
-  const showPreview = type === "gdoc" && isDesktop;
-  const previewUrl = showPreview ? url : null;
+  const showPreview = (type === "pdf" || type === "gdoc") && isDesktop;
+  const previewUrl = showPreview
+    ? type === "pdf"
+      ? `${url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`
+      : url
+    : null;
   const iframeClass =
     layoutMode === "list" ? "article-card-iframe-list" : "article-card-iframe-grid";
 
