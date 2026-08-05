@@ -78,14 +78,16 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
               {repo.description}
             </Text>
           )}
-          <Group gap="sm" mt="xs">
-            <Text size="xs" c="dimmed">
-              ★ {repo.stargazers_count}
-            </Text>
-            <Text size="xs" c="dimmed">
-              ⎇ {repo.forks_count}
-            </Text>
-          </Group>
+          {repo.html_url.includes("github.com") && (
+            <Group gap="sm" mt="xs">
+              <Text size="xs" c="dimmed">
+                ★ {repo.stargazers_count}
+              </Text>
+              <Text size="xs" c="dimmed">
+                ⎇ {repo.forks_count}
+              </Text>
+            </Group>
+          )}
         </Stack>
       </Paper>
     </Anchor>

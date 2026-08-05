@@ -13,6 +13,25 @@ const DISPLAY_OVERRIDES: Record<string, { displayName?: string; language?: strin
 
 const EXCLUDED_REPOS = ["java-threading"];
 
+const FEATURED: GitHubRepo[] = [
+  {
+    id: -1,
+    name: "Carl Schmitt Catalogue",
+    full_name: "carl-schmitt-catalogue",
+    description:
+      "Catalogue raisonné for Carl Schmitt: browse, filter, and view artworks, exhibitions, and provenance.",
+    html_url: "https://catalogue.carlschmitt.org",
+    language: "TypeScript",
+    stargazers_count: 0,
+    forks_count: 0,
+    topics: [],
+    homepage: "https://catalogue.carlschmitt.org",
+    fork: false,
+    created_at: "",
+    updated_at: "",
+  },
+];
+
 export async function GET() {
   try {
     const res = await fetch(
@@ -90,7 +109,7 @@ export async function GET() {
       };
     });
 
-    return NextResponse.json(sortedRepos as GitHubRepo[]);
+    return NextResponse.json([...FEATURED, ...sortedRepos] as GitHubRepo[]);
   } catch (error) {
     console.error("Failed to fetch GitHub repos:", error);
     return NextResponse.json({ error: "Failed to fetch repositories" }, { status: 500 });
