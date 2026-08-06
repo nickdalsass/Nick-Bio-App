@@ -1,10 +1,10 @@
 "use client";
 
 import { SegmentedControl } from "@mantine/core";
-import { useLayoutMode, type LayoutMode } from "./LayoutContext";
+import { useLayoutMode, type LayoutMode, type LayoutPage } from "./LayoutContext";
 
-export default function LayoutSwitcher() {
-  const [mode, setMode] = useLayoutMode();
+export default function LayoutSwitcher({ page }: { page: LayoutPage }) {
+  const [mode, setMode] = useLayoutMode(page);
 
   return (
     <SegmentedControl
@@ -13,8 +13,8 @@ export default function LayoutSwitcher() {
       value={mode}
       onChange={(value) => setMode(value as LayoutMode)}
       data={[
-        { label: "Grid", value: "grid" },
         { label: "List", value: "list" },
+        { label: "Grid", value: "grid" },
       ]}
       styles={{
         label: { color: "#000" },

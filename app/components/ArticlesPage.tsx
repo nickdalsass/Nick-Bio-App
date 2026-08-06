@@ -85,7 +85,7 @@ const SECTIONS: { key: ArticleCategory; title: string }[] = [
 const PREVIEW_IDS = ARTICLES.filter((a) => a.type === "pdf").map((a) => a.id);
 
 const ArticlesPage = () => {
-  const [layoutMode] = useLayoutMode();
+  const [layoutMode] = useLayoutMode("articles");
   const isMobile = useMediaQuery("(max-width: 47.99em)");
   const isDesktop = useMediaQuery("(min-width: 64em)");
   const effectiveLayoutMode = isMobile ? "grid" : layoutMode;
@@ -119,7 +119,7 @@ const ArticlesPage = () => {
           >
             <Title order={2}>Articles</Title>
           </motion.div>
-          {!isMobile && <LayoutSwitcher />}
+          {!isMobile && <LayoutSwitcher page="articles" />}
         </Group>
         <div className="retro-divider" />
 

@@ -3,18 +3,24 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 export type LayoutMode = "grid" | "list";
+export type LayoutPage = "projects" | "articles";
 
-const LAYOUT_STORAGE_KEY = "bio-app-layout";
+const DEFAULTS: Record<LayoutPage, LayoutMode> = {
+  projects: "list",
+  articles: "grid",
+};
+
+const storageKey = (page: LayoutPage) => `bio-app-layout-${page}`;
 
 interface LayoutContextType {
-  layoutMode: LayoutMode;
-  setLayoutMode: (mode: LayoutMode) => void;
+  modes: Record<LayoutPage, LayoutMode>;
+  setLayoutMode: (page: LayoutPage, mode: LayoutMode) => void;
 }
 
 const LayoutContext = createContext<LayoutContextType | null>(null);
 
 export function LayoutProvider({ children }: { children: React.ReactNode }) {
-  const [layoutMode, setLayoutModeState] = useState<LayoutMode>("grid");
+  const [modes, setModes] = useState<Record<LayoutPage, LayoutMode>>(DEFAULTS);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,30 +29,36 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!mounted) return;
-    const stored = localStorage.getItem(LAYOUT_STORAGE_KEY) as LayoutMode | null;
-    if (stored && ["grid", "list"].includes(stored)) {
-      setLayoutModeState(stored);
+    const next = { ...DEFAULTS };
+    for (const page of Object.keys(DEFAULTS) as LayoutPage[]) {
+      const stored = localStorage.getItem(storageKey(page)) as LayoutMode | null;
+      if (stored && ["grid", "list"].includes(stored)) {
+        next[page] = stored;
+      }
     }
+    setModes(next);
   }, [mounted]);
 
-  const setLayoutMode = useCallback((mode: LayoutMode) => {
-    setLayoutModeState(mode);
+  const setLayoutMode = useCallback((page: LayoutPage, mode: LayoutMode) => {
+    setModes((prev) => ({ ...prev, [page]: mode }));
     if (typeof window !== "undefined") {
-      localStorage.setItem(LAYOUT_STORAGE_KEY, mode);
+      localStorage.setItem(storageKey(page), mode);
     }
   }, []);
 
   return (
-    <LayoutContext.Provider value={{ layoutMode, setLayoutMode }}>
+    <LayoutContext.Provider value={{ modes, setLayoutMode }}>
       {children}
     </LayoutContext.Provider>
   );
 }
 
-export function useLayoutMode(): [LayoutMode, (mode: LayoutMode) => void] {
+export function useLayoutMode(
+  page: LayoutPage
+): [LayoutMode, (mode: LayoutMode) => void] {
   const ctx = useContext(LayoutContext);
   if (!ctx) {
-    return ["grid", () => {}];
+    return [DEFAULTS[page], () => {}];
   }
-  return [ctx.layoutMode, ctx.setLayoutMode];
+  return [ctx.modes[page], (mode) => ctx.setLayoutMode(page, mode)];
 }

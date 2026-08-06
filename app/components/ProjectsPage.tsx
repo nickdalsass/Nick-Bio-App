@@ -13,7 +13,7 @@ export default function ProjectsPage() {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [layoutMode] = useLayoutMode();
+  const [layoutMode] = useLayoutMode("projects");
   const isMobile = useMediaQuery("(max-width: 47.99em)");
   const effectiveLayoutMode = isMobile ? "grid" : layoutMode;
 
@@ -91,7 +91,7 @@ export default function ProjectsPage() {
           >
             <Title order={2}>Projects</Title>
           </motion.div>
-          {!isMobile && <LayoutSwitcher />}
+          {!isMobile && <LayoutSwitcher page="projects" />}
         </Group>
         <div className="retro-divider" />
 
