@@ -11,7 +11,7 @@ const DISPLAY_OVERRIDES: Record<string, { displayName?: string; language?: strin
   "compiler-project": { displayName: "Compiler Project", language: "Java" },
 };
 
-const EXCLUDED_REPOS = ["java-threading"];
+const EXCLUDED_REPOS = ["java-threading", "nick-bio-app"];
 
 const FEATURED: GitHubRepo[] = [
   {
@@ -59,7 +59,6 @@ export async function GET() {
       "basic-morph-operations",
       "compiler-project",
     ];
-    const PIN_AT_BOTTOM = "Nick-Bio-App";
 
     const includeRepo = (name: string, fork: boolean) =>
       !fork || PINNED_FORKS.includes(name.toLowerCase());
@@ -78,14 +77,10 @@ export async function GET() {
       const bLower = (b.name as string).toLowerCase();
       const aPinned = PINNED_ORDER.indexOf(aLower);
       const bPinned = PINNED_ORDER.indexOf(bLower);
-      const aPinBottom = aLower === PIN_AT_BOTTOM.toLowerCase();
-      const bPinBottom = bLower === PIN_AT_BOTTOM.toLowerCase();
 
       if (aPinned >= 0 && bPinned >= 0) return aPinned - bPinned;
       if (aPinned >= 0) return -1;
       if (bPinned >= 0) return 1;
-      if (aPinBottom && !bPinBottom) return 1;
-      if (!aPinBottom && bPinBottom) return -1;
       return 0;
     });
 

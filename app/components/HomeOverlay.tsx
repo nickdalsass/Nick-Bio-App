@@ -145,7 +145,7 @@ const HomeOverlay = () => {
                             ta="center"
                             style={isMobile ? undefined : { whiteSpace: "nowrap" }}
                           >
-                            CUA Junior · CS, Math & Philosophy
+                            CUA Senior · CS, Math & Philosophy
                           </Text>
                         </motion.div>
                       ) : (
