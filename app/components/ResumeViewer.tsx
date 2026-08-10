@@ -75,10 +75,10 @@ export default function ResumeViewer() {
                 color: "inherit",
               }}
             >
-              <Paper p="sm" radius={0} className="retro-card" style={RESUME_BUTTON_STYLE}>
-                <Group gap="xs" wrap="nowrap">
-                  <span style={{ fontSize: "1.25rem" }}>📄</span>
-                  <Text size="sm" fw={600}>
+              <Paper p="xs" radius={0} className="retro-card" style={RESUME_BUTTON_STYLE}>
+                <Group gap={4} wrap="nowrap">
+                  <span style={{ fontSize: "0.95rem" }}>📄</span>
+                  <Text size="xs" fw={600}>
                     My Resume
                   </Text>
                 </Group>

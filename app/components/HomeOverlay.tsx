@@ -38,6 +38,16 @@ const HomeOverlay = () => {
       if (interval) clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    const main = document.querySelector(".mantine-AppShell-main") as HTMLElement | null;
+    if (!main) return;
+    const prev = main.style.overflowY;
+    main.style.overflowY = "hidden";
+    return () => {
+      main.style.overflowY = prev;
+    };
+  }, []);
   return (
     <div className="home-page-wrapper">
       <Container size="lg" px={{ base: 16, sm: 20, md: 24 }} className="home-page-container">
@@ -96,7 +106,7 @@ const HomeOverlay = () => {
               </div>
             </motion.div>
 
-            <Stack align="center" gap="xs">
+            <Stack align="center" gap={4}>
               <motion.div
                 variants={{
                   visible: { opacity: 1, y: 0 },
@@ -127,7 +137,7 @@ const HomeOverlay = () => {
                   transition={{ duration: 0.2 }}
                   style={{ cursor: "default" }}
                 >
-                  <Stack align="center" gap={4} style={{ minHeight: 48 }}>
+                  <div style={{ minHeight: isMobile ? 22 : 28 }}>
                     <AnimatePresence mode="wait" initial={false}>
                       {showEducation ? (
                         <motion.div
@@ -169,7 +179,7 @@ const HomeOverlay = () => {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </Stack>
+                  </div>
                 </motion.div>
               </motion.div>
 
@@ -185,7 +195,7 @@ const HomeOverlay = () => {
                     Previously at
                   </Text>
                 </div>
-                <Group gap="sm" justify="center" wrap="nowrap" p="sm">
+                <Group gap={isMobile ? 6 : "sm"} justify="center" wrap="nowrap" p={isMobile ? 6 : "sm"}>
                   {INTERNSHIPS.map((company, i) => (
                     <Anchor
                       key={company.name}

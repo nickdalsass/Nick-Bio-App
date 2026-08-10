@@ -28,10 +28,11 @@ const socialLinks = [
     alt: "GitHub Logo",
   },
   {
-    href: "https://discord.com/users/1415143148585353246",
-    label: "Discord",
-    src: "/DiscordLogo.png",
-    alt: "Discord Logo",
+    href: "mailto:nicholasdalsass@gmail.com",
+    label: "Email",
+    src: "/gmail-logo.png",
+    alt: "Gmail Logo",
+    scale: 1.25,
   },
 ];
 
@@ -41,13 +42,16 @@ function SocialCard({
   src,
   alt,
   index,
+  scale = 1,
 }: {
   href: string;
   label: string;
   src: string;
   alt: string;
   index?: number;
+  scale?: number;
 }) {
+  const external = href.startsWith("http");
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -58,8 +62,7 @@ function SocialCard({
     >
       <Anchor
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
         style={{ textDecoration: "none" }}
       >
         <Paper
@@ -68,7 +71,14 @@ function SocialCard({
           w={{ base: 120, sm: 140 }}
           style={SOCIAL_CARD_STYLE}
         >
-          <Image w={64} h={64} radius="md" src={src} alt={alt} style={{ objectFit: "contain" }} />
+          <Image
+            w={64}
+            h={64}
+            radius="md"
+            src={src}
+            alt={alt}
+            style={{ objectFit: "contain", transform: scale !== 1 ? `scale(${scale})` : undefined }}
+          />
           <Text
             size="sm"
             c="dimmed"

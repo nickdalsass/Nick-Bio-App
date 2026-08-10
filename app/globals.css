@@ -195,12 +195,16 @@ body.retro-scanlines,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(100svh - 110px - 80px);
-  padding-top: 40px;
+  height: calc(100svh - 110px);
+  max-height: calc(100svh - 110px);
+  overflow: hidden;
+  padding-top: 16px;
+  box-sizing: border-box;
 }
 @media (min-width: 48em) {
   .home-page-wrapper {
-    min-height: calc(100vh - 100px - 80px);
+    height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
     padding-top: 56px;
   }
 }
@@ -245,24 +249,37 @@ body.retro-scanlines,
 
 /* Internship logos — mini Win95 window under the home subtitle */
 .internship-shell {
-  margin-top: 8px;
-  width: min(100%, 340px);
+  margin-top: 22px;
+  margin-bottom: 96px;
+  width: min(100%, 240px);
   background: #c0c0c0;
   border: 2px solid;
   border-color: #fff #404040 #404040 #fff;
   box-shadow: inset 1px 1px 0 #fff;
 }
+@media (min-width: 48em) {
+  .internship-shell {
+    margin-top: 8px;
+    margin-bottom: 0;
+    width: min(100%, 340px);
+  }
+}
 .internship-shell-title {
   background: var(--win95-title-bar);
-  padding: 3px 8px;
+  padding: 2px 6px;
+}
+@media (min-width: 48em) {
+  .internship-shell-title {
+    padding: 3px 8px;
+  }
 }
 .internship-logo-tile {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 56px;
-  padding: 8px 10px;
+  height: 40px;
+  padding: 4px 6px;
   background: #fff;
   border: 2px solid;
   border-color: #808080 #fff #fff #808080;
@@ -273,17 +290,18 @@ body.retro-scanlines,
 @media (min-width: 48em) {
   .internship-logo-tile {
     height: 64px;
+    padding: 8px 10px;
   }
 }
 .internship-logo-img {
   width: auto;
-  height: 28px;
-  max-width: 120px;
+  height: 20px;
+  max-width: 80px;
   object-fit: contain;
 }
 .internship-logo-img--lg {
-  height: 36px;
-  max-width: 150px;
+  height: 26px;
+  max-width: 100px;
 }
 @media (min-width: 48em) {
   .internship-logo-img {
