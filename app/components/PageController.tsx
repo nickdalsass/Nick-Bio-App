@@ -18,6 +18,8 @@ const ROUTE_TO_SEGMENT: Record<string, string> = {
   "/connect": "Connect",
 };
 
+const PAGES = ["Home", "Projects", "Articles", "Connect"] as const;
+
 const PageController = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -27,6 +29,23 @@ const PageController = () => {
   useEffect(() => setMounted(true), []);
 
   const currentPage = ROUTE_TO_SEGMENT[pathname] ?? "Home";
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      const t = e.target as HTMLElement | null;
+      if (t?.closest("input, textarea, select, [contenteditable=true]")) return;
+
+      const i = PAGES.indexOf(currentPage as (typeof PAGES)[number]);
+      if (i < 0) return;
+      const next = e.key === "ArrowRight"
+        ? PAGES[(i + 1) % PAGES.length]
+        : PAGES[(i - 1 + PAGES.length) % PAGES.length];
+      router.push(SEGMENT_TO_ROUTE[next]);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [currentPage, router]);
 
   if (!mounted) return null;
 
@@ -51,7 +70,7 @@ const PageController = () => {
           boxShadow: "inset 1px 1px 0 #404040",
         },
       }}
-      data={["Home", "Projects", "Articles", "Connect"]}
+      data={[...PAGES]}
     />
   );
 };
