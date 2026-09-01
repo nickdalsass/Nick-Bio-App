@@ -1,8 +1,8 @@
 "use client";
 
-import { Paper, Stack, Group, Title, Text, Anchor, Loader } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { Paper, Stack, Group, Title, Text, Anchor, Loader } from "@mantine/core";
 
 export interface ArticleCardProps {
   id?: string;
@@ -34,17 +34,20 @@ export default function ArticleCard({
   docsReady = true,
   onDocLoad,
 }: ArticleCardProps) {
-  const isMobile = useMediaQuery("(max-width: 47.99em)");
-  /* Only show PDF preview on desktop (1024px+), not on iPads or medium screens */
-  const isDesktop = useMediaQuery("(min-width: 64em)");
-  const showPreview = (type === "pdf" || type === "gdoc") && isDesktop;
-  const previewUrl = showPreview
-    ? type === "pdf"
+  const [loadPreview, setLoadPreview] = useState(false);
+  const showPreview = type === "pdf" || type === "gdoc";
+  const previewUrl =
+    type === "pdf"
       ? `${url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`
-      : url
-    : null;
+      : url;
   const iframeClass =
     layoutMode === "list" ? "article-card-iframe-list" : "article-card-iframe-grid";
+
+  useEffect(() => {
+    if (window.matchMedia("(min-width: 64em)").matches) {
+      setLoadPreview(true);
+    }
+  }, []);
 
   return (
     <motion.div
@@ -78,17 +81,12 @@ export default function ArticleCard({
             </Anchor>
           </Group>
           {excerpt && (
-            <Text
-              size="sm"
-              c="dimmed"
-              lineClamp={isMobile ? undefined : 2}
-              style={isMobile ? undefined : { overflow: "hidden", textOverflow: "ellipsis" }}
-            >
+            <Text size="sm" c="dimmed" className="article-excerpt">
               {excerpt}
             </Text>
           )}
-          {previewUrl && (
-            <Paper style={{ overflow: "hidden", border: "1px solid #808080", position: "relative" }}>
+          {showPreview && (
+            <Paper className="article-preview">
               {!docsReady && (
                 <div
                   style={{
@@ -104,12 +102,14 @@ export default function ArticleCard({
                   <Loader size="lg" color="gray" />
                 </div>
               )}
-              <iframe
-                src={previewUrl}
-                title={title}
-                className={iframeClass}
-                onLoad={() => id && onDocLoad?.(id)}
-              />
+              {loadPreview && (
+                <iframe
+                  src={previewUrl}
+                  title={title}
+                  className={iframeClass}
+                  onLoad={() => id && onDocLoad?.(id)}
+                />
+              )}
             </Paper>
           )}
         </Stack>

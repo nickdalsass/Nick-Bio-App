@@ -1,7 +1,6 @@
 "use client";
 
 import { Paper, Text, Group, Badge, Anchor, Stack } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import type { GitHubRepo } from "@/app/types/github";
 import { motion } from "motion/react";
 
@@ -26,7 +25,6 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps) {
-  const isMobile = useMediaQuery("(max-width: 47.99em)");
   const langColor = repo.language ? (LANG_COLORS[repo.language] ?? "#94a3b8") : "#94a3b8";
 
   const cardContent = (
@@ -40,28 +38,18 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
       <Paper
         p={{ base: "md", sm: "lg" }}
         radius={0}
+        className={`project-card retro-card${variant === "list" ? " project-card--list" : ""}`}
         style={{
           border: "2px solid",
           borderColor: "#fff #404040 #404040 #fff",
           boxShadow: "inset 1px 1px 0 #fff",
           background: "#c0c0c0",
           transition: "all 0.2s ease",
-          minHeight: isMobile ? 180 : 170,
-          height: isMobile ? "auto" : 170,
-          overflow: "hidden",
         }}
-        className="project-card retro-card"
       >
-        <Stack
-          gap="xs"
-          style={{
-            height: isMobile ? "auto" : "100%",
-            minHeight: 0,
-            flex: isMobile ? undefined : 1,
-          }}
-        >
-          <Group justify="space-between" wrap={variant === "list" || isMobile ? "wrap" : "nowrap"}>
-            <Text fw={700} size="lg" lineClamp={isMobile ? 2 : 1} style={{ minWidth: 0 }}>
+        <Stack gap="xs" className="project-card-stack">
+          <Group justify="space-between" wrap="wrap" className="project-card-header">
+            <Text fw={700} size="lg" lineClamp={2} className="project-card-title" style={{ minWidth: 0 }}>
               {repo.name.includes(" ") ? repo.name : repo.name.replace(/-/g, " ")}
             </Text>
             <Badge size="xs" variant="dot" color={langColor}>
@@ -72,7 +60,7 @@ export default function ProjectCard({ repo, variant = "card" }: ProjectCardProps
             <Text
               size="sm"
               c="dimmed"
-              lineClamp={isMobile ? 4 : 2}
+              className="project-card-description"
               style={{ overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}
             >
               {repo.description}

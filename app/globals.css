@@ -12,6 +12,10 @@
   --win95-text-dimmed: #505050;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 html,
 body {
   margin: 0;
@@ -311,6 +315,95 @@ body.retro-scanlines,
   .internship-logo-img--lg {
     height: 44px;
     max-width: 170px;
+  }
+}
+
+/* Hide layout switcher on mobile without waiting for JS media queries */
+.layout-switcher-wrap {
+  display: none;
+}
+@media (min-width: 48em) {
+  .layout-switcher-wrap {
+    display: block;
+  }
+}
+
+/* PDF previews: reserve space via CSS so hydration doesn't mount/unmount iframes */
+.article-preview {
+  display: none;
+  overflow: hidden;
+  border: 1px solid #808080;
+  position: relative;
+}
+@media (min-width: 64em) {
+  .article-preview {
+    display: block;
+  }
+}
+
+.article-excerpt {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+@media (max-width: 47.99em) {
+  .article-excerpt {
+    display: block;
+    -webkit-line-clamp: unset;
+  }
+}
+
+.project-card {
+  min-height: 170px;
+  height: 170px;
+  overflow: hidden;
+}
+@media (max-width: 47.99em) {
+  .project-card {
+    min-height: 180px;
+    height: auto;
+  }
+}
+
+.project-card-stack {
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+}
+@media (max-width: 47.99em) {
+  .project-card-stack {
+    height: auto;
+    flex: unset;
+  }
+}
+
+.project-card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+@media (max-width: 47.99em) {
+  .project-card-title {
+    -webkit-line-clamp: 2;
+  }
+}
+
+.project-card-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+@media (max-width: 47.99em) {
+  .project-card-description {
+    -webkit-line-clamp: 4;
+  }
+}
+
+@media (min-width: 48em) {
+  .project-card:not(.project-card--list) .project-card-header {
+    flex-wrap: nowrap;
   }
 }
 

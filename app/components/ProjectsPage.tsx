@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Center, SimpleGrid, Stack, Title, Text, Loader, Group, Container } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { SimpleGrid, Stack, Title, Text, Group, Container, Skeleton } from "@mantine/core";
 import ProjectCard from "./ProjectCard";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutMode } from "./LayoutContext";
@@ -14,8 +13,6 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [layoutMode] = useLayoutMode("projects");
-  const isMobile = useMediaQuery("(max-width: 47.99em)");
-  const effectiveLayoutMode = isMobile ? "grid" : layoutMode;
 
   useEffect(() => {
     fetch("/api/github/repos")
@@ -39,39 +36,15 @@ export default function ProjectsPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const cardVariant = effectiveLayoutMode === "list" ? "list" : "card";
-
-  if (loading) {
-    return (
-      <Center style={{ minHeight: "70vh" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Stack align="center" gap="md">
-            <Loader size="lg" color="gray" />
-            <Text c="dimmed" size="sm">
-              Fetching from GitHub...
-            </Text>
-            <Text
-              size="xs"
-              c="dimmed"
-              fs="italic"
-            >{`C:/Users/Nick/Projects > Loading Repos...`}</Text>
-          </Stack>
-        </motion.div>
-      </Center>
-    );
-  }
+  const cardVariant = layoutMode === "list" ? "list" : "card";
 
   if (error) {
     return (
-      <Center style={{ minHeight: "70vh" }}>
-        <Stack align="center" gap="md">
+      <Container size="xl" py={{ base: "md", md: "xl" }} px={{ base: 16, sm: 20, md: 24 }}>
+        <Stack align="center" gap="md" style={{ minHeight: "50vh", justifyContent: "center" }}>
           <Text c="red">Failed to load projects: {error}</Text>
         </Stack>
-      </Center>
+      </Container>
     );
   }
 
@@ -91,11 +64,27 @@ export default function ProjectsPage() {
           >
             <Title order={2}>Projects</Title>
           </motion.div>
-          {!isMobile && <LayoutSwitcher page="projects" />}
+          <div className="layout-switcher-wrap">
+            <LayoutSwitcher page="projects" />
+          </div>
         </Group>
         <div className="retro-divider" />
 
-        {effectiveLayoutMode === "list" ? (
+        {loading ? (
+          layoutMode === "list" ? (
+            <Stack gap="md">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} height={170} radius={0} />
+              ))}
+            </Stack>
+          ) : (
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} height={170} radius={0} />
+              ))}
+            </SimpleGrid>
+          )
+        ) : layoutMode === "list" ? (
           <Stack gap="md">
             {repos.map((repo, i) => (
               <motion.div

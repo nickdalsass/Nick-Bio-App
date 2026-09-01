@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { SimpleGrid, Stack, Title, Group, Container } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import LayoutSwitcher from "./LayoutSwitcher";
 import { useLayoutMode } from "./LayoutContext";
 import ArticleCard from "./ArticleCard";
@@ -86,13 +85,14 @@ const PREVIEW_IDS = ARTICLES.filter((a) => a.type === "pdf").map((a) => a.id);
 
 const ArticlesPage = () => {
   const [layoutMode] = useLayoutMode("articles");
-  const isMobile = useMediaQuery("(max-width: 47.99em)");
-  const isDesktop = useMediaQuery("(min-width: 64em)");
-  const effectiveLayoutMode = isMobile ? "grid" : layoutMode;
+  const [previewsActive, setPreviewsActive] = useState(false);
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
 
-  // ponytail: gate all loaders on slowest iframe; no timeout until stuck loads become a real issue
-  const docsReady = !isDesktop || PREVIEW_IDS.every((id) => loadedIds.has(id));
+  useEffect(() => {
+    setPreviewsActive(window.matchMedia("(min-width: 64em)").matches);
+  }, []);
+
+  const docsReady = !previewsActive || PREVIEW_IDS.every((id) => loadedIds.has(id));
 
   const onDocLoad = (id: string) => {
     setLoadedIds((prev) => {
@@ -119,7 +119,9 @@ const ArticlesPage = () => {
           >
             <Title order={2}>Articles</Title>
           </motion.div>
-          {!isMobile && <LayoutSwitcher page="articles" />}
+          <div className="layout-switcher-wrap">
+            <LayoutSwitcher page="articles" />
+          </div>
         </Group>
         <div className="retro-divider" />
 
@@ -139,7 +141,7 @@ const ArticlesPage = () => {
                   {section.title}
                 </Title>
               </motion.div>
-              {effectiveLayoutMode === "list" ? (
+              {layoutMode === "list" ? (
                 <Stack gap="md">
                   {sectionArticles.map((article, i) => (
                     <ArticleCard

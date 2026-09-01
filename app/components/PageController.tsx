@@ -47,7 +47,15 @@ const PageController = () => {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [currentPage, router]);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return (
+      <div
+        className="page-controller"
+        aria-hidden
+        style={{ minHeight: 36, minWidth: isMobile ? 260 : 320, visibility: "hidden" }}
+      />
+    );
+  }
 
   return (
     <SegmentedControl
